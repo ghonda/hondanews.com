@@ -1,5 +1,10 @@
 function Home() {
-  return <h1>Lari, vai dar tudo certo! Koshoto! 😁🏍️</h1>;
+  return (
+    <>
+      <h1>Lari, vai dar tudo certo! </h1>
+      <p>Koshoto 🏍️</p>
+    </>
+  );
 }
 
 export default Home;
