@@ -7,6 +7,13 @@ async function status(request, response) {
 
   const databaseVersionValue = databaseVersionResult.rows[0].server_version;
 
+  const databaseMaxConnectionsResult = await database.query(
+    "show max_connections;",
+  );
+
+  const databaseMaxConnectionsValue =
+    databaseMaxConnectionsResult.rows[0].max_connections;
+
   const databaseName = process.env.POSTGRES_DB;
 
   const databaseOpenedConnectionResult = await database.query({
@@ -22,6 +29,7 @@ async function status(request, response) {
     dependencies: {
       database: {
         version: databaseVersionValue,
+        max_connections: parseInt(databaseMaxConnectionsValue),
         opened_connections: databaseOpenedConnectionsValue,
       },
     },
