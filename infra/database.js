@@ -23,8 +23,6 @@ async function getNewClient() {
     ssl: getSSLValues(),
   });
 
-  console.log(client);
-
   await client.connect();
   return client;
 }
