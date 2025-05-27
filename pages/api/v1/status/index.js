@@ -2,7 +2,6 @@ import database from "/infra/database.js";
 import { InternalServerError } from "infra/errors";
 
 async function status(request, response) {
-
   try {
     const updateAt = new Date().toISOString();
 
@@ -38,7 +37,6 @@ async function status(request, response) {
       },
     });
   } catch (error) {
-    
     const publicErrorObject = new InternalServerError({
       cause: error,
     });
