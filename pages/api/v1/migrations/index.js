@@ -2,7 +2,7 @@ import { createRouter } from "next-connect";
 import migrationRunner from "node-pg-migrate";
 import { join } from "node:path";
 import database from "infra/database.js";
-import controller from 'infra/controller.js'
+import controller from "infra/controller.js";
 
 const router = createRouter();
 
