@@ -3,7 +3,7 @@ import orquestrator from "tests/orquestrator";
 
 beforeAll(async () => {
   await orquestrator.waitForAllServices();
-  await database.query("drop schema public cascade; create schema public;");
+  await orquestrator.clearDatabase();
 });
 
 database.query("select 1+1;");
