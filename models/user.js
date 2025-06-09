@@ -1,5 +1,5 @@
 import database from "infra/database.js";
-import { ValidationError } from 'infra/errors.js';
+import { ValidationError } from "infra/errors.js";
 
 async function create(userInputValues) {
   await validateUniqueEmail(userInputValues.email);

@@ -51,7 +51,6 @@ test("POST to /api/v1/user duplicate email should return 400", async () => {
   });
 
   expect(response1.status).toBe(201);
-  
 
   const response2 = await fetch("http://localhost:3000/api/v1/users", {
     method: "POST",
@@ -73,8 +72,8 @@ test("POST to /api/v1/user duplicate email should return 400", async () => {
     name: "ValidationError",
     message: "O email informado já está sendo utilizado",
     action: "Utilize outro email para realizar o cadastro",
-    statusCode:400
-  })
+    statusCode: 400,
+  });
 });
 
 test("POST to /api/v1/user duplicate username should return 400", async () => {
@@ -91,7 +90,6 @@ test("POST to /api/v1/user duplicate username should return 400", async () => {
   });
 
   expect(response1.status).toBe(201);
-  
 
   const response2 = await fetch("http://localhost:3000/api/v1/users", {
     method: "POST",
@@ -113,6 +111,6 @@ test("POST to /api/v1/user duplicate username should return 400", async () => {
     name: "ValidationError",
     message: "O username informado já está sendo utilizado",
     action: "Utilize outro username para realizar o cadastro",
-    statusCode:400
-  })
+    statusCode: 400,
+  });
 });
