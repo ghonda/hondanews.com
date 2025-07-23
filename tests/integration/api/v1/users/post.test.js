@@ -1,5 +1,7 @@
 import { version as uuidVersion } from "uuid";
 import orquestrator from "tests/orquestrator";
+import user from "models/user.js";
+import password from "models/password.js";
 
 beforeAll(async () => {
   await orquestrator.waitForAllServices();
@@ -27,7 +29,7 @@ test("POST to /api/v1/user should return 200", async () => {
     id: responseBody.id,
     username: "ghonda",
     email: "contato@curso.dev",
-    password: "senha123",
+    password: responseBody.password,
     created_at: responseBody.created_at,
     updated_at: responseBody.updated_at,
   });
@@ -35,6 +37,20 @@ test("POST to /api/v1/user should return 200", async () => {
   expect(uuidVersion(responseBody.id)).toBe(4);
   expect(Date.parse(responseBody.created_at)).not.toBeNaN();
   expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
+
+  const userInDatabase = await user.findOneByUsername("ghonda");
+  const correctPasswordMatch = await password.compare(
+    "senha123",
+    userInDatabase.password,
+  );
+
+  expect(correctPasswordMatch).toBe(true);
+
+  const incorrectPasswordMatch = await password.compare(
+    "senhaErrada",
+    userInDatabase.password,
+  );
+  expect(incorrectPasswordMatch).toBe(false);
 });
 
 test("POST to /api/v1/user duplicate email should return 400", async () => {
@@ -71,7 +87,7 @@ test("POST to /api/v1/user duplicate email should return 400", async () => {
   expect(responseBody).toEqual({
     name: "ValidationError",
     message: "O email informado já está sendo utilizado",
-    action: "Utilize outro email para realizar o cadastro",
+    action: "Utilize outro email para realizar esta operação.",
     statusCode: 400,
   });
 });
@@ -110,7 +126,7 @@ test("POST to /api/v1/user duplicate username should return 400", async () => {
   expect(responseBody).toEqual({
     name: "ValidationError",
     message: "O username informado já está sendo utilizado",
-    action: "Utilize outro username para realizar o cadastro",
+    action: "Utilize outro username para realizar esta operação.",
     statusCode: 400,
   });
 });
