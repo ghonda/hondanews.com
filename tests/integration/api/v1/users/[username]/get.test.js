@@ -8,19 +8,11 @@ beforeAll(async () => {
 });
 
 test("Get to /api/v1/[username] should return 200", async () => {
-  const response1 = await fetch("http://localhost:3000/api/v1/users", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      username: "MesmoCase",
-      email: "mesmo.case@curso.dev",
-      password: "senha123",
-    }),
+  await orquestrator.createUser({
+    username: "MesmoCase",
+    email: "mesmo.case@curso.dev",
+    password: "senha123",
   });
-
-  expect(response1.status).toBe(201);
 
   const response2 = await fetch("http://localhost:3000/api/v1/users/MesmoCase");
 
@@ -43,19 +35,11 @@ test("Get to /api/v1/[username] should return 200", async () => {
 });
 
 test("Get to /api/v1/[username] case mismatch", async () => {
-  const response1 = await fetch("http://localhost:3000/api/v1/users", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      username: "CaseDiferente",
-      email: "case.diferente@curso.dev",
-      password: "senha123",
-    }),
+  await orquestrator.createUser({
+    username: "CaseDiferente",
+    email: "case.diferente@curso.dev",
+    password: "senha123",
   });
-
-  expect(response1.status).toBe(201);
 
   const response2 = await fetch(
     "http://localhost:3000/api/v1/users/casediferente",
