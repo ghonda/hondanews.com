@@ -30,33 +30,13 @@ test("PATCH to /api/v1/[username] without user", async () => {
 });
 
 test("PATCH to /api/v1/user duplicate username should return 400", async () => {
-  const user1Response = await fetch("http://localhost:3000/api/v1/users", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      username: "user1",
-      email: "user1@curso.dev",
-      password: "senha123",
-    }),
+  await orquestrator.createUser({
+    username: "user1",
   });
 
-  expect(user1Response.status).toBe(201);
-
-  const user2Response = await fetch("http://localhost:3000/api/v1/users", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      username: "user2",
-      email: "user2@curso.dev",
-      password: "senha123",
-    }),
+  await orquestrator.createUser({
+    username: "user2",
   });
-
-  expect(user2Response.status).toBe(201);
 
   const response = await fetch("http://localhost:3000/api/v1/users/user2", {
     method: "PATCH",
@@ -81,43 +61,26 @@ test("PATCH to /api/v1/user duplicate username should return 400", async () => {
 });
 
 test("PATCH to /api/v1/user duplicate email should return 400", async () => {
-  const user1Response = await fetch("http://localhost:3000/api/v1/users", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      username: "email1",
-      email: "email1@curso.dev",
-      password: "senha123",
-    }),
+  await orquestrator.createUser({
+    email: "email1@curso.dev",
   });
 
-  expect(user1Response.status).toBe(201);
-
-  const user2Response = await fetch("http://localhost:3000/api/v1/users", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      username: "email2",
-      email: "email2@curso.dev",
-      password: "senha123",
-    }),
+  const createdUser2 = await orquestrator.createUser({
+    email: "email2@curso.dev",
   });
 
-  expect(user2Response.status).toBe(201);
-
-  const response = await fetch("http://localhost:3000/api/v1/users/email2", {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
+  const response = await fetch(
+    "http://localhost:3000/api/v1/users/" + createdUser2.username,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: "email1@curso.dev",
+      }),
     },
-    body: JSON.stringify({
-      email: "email1@curso.dev",
-    }),
-  });
+  );
 
   expect(response.status).toBe(400);
 
@@ -132,19 +95,10 @@ test("PATCH to /api/v1/user duplicate email should return 400", async () => {
 });
 
 test("PATCH to /api/v1/user unique username should return 200", async () => {
-  const user1Response = await fetch("http://localhost:3000/api/v1/users", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      username: "uniqueUser1",
-      email: "uniqueUser1@curso.dev",
-      password: "senha123",
-    }),
+  await orquestrator.createUser({
+    username: "uniqueUser1",
+    email: "uniqueUser1@curso.dev",
   });
-
-  expect(user1Response.status).toBe(201);
 
   const response = await fetch(
     "http://localhost:3000/api/v1/users/uniqueUser1",
@@ -179,19 +133,11 @@ test("PATCH to /api/v1/user unique username should return 200", async () => {
 });
 
 test("PATCH to /api/v1/user unique email should return 200", async () => {
-  const user1Response = await fetch("http://localhost:3000/api/v1/users", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      username: "uniqueEmail1",
-      email: "uniqueEmail1@curso.dev",
-      password: "senha123",
-    }),
+  await orquestrator.createUser({
+    username: "uniqueEmail1",
+    email: "uniqueEmail1@curso.dev",
+    password: "senha123",
   });
-
-  expect(user1Response.status).toBe(201);
 
   const response = await fetch(
     "http://localhost:3000/api/v1/users/uniqueEmail1",
@@ -226,19 +172,11 @@ test("PATCH to /api/v1/user unique email should return 200", async () => {
 });
 
 test("PATCH to /api/v1/user new password should return 200", async () => {
-  const user1Response = await fetch("http://localhost:3000/api/v1/users", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      username: "newPassword1",
-      email: "newPassword1@curso.dev",
-      password: "newPassword1",
-    }),
+  await orquestrator.createUser({
+    username: "newPassword1",
+    email: "newPassword1@curso.dev",
+    password: "newPassword1",
   });
-
-  expect(user1Response.status).toBe(201);
 
   const response = await fetch(
     "http://localhost:3000/api/v1/users/newPassword1",
