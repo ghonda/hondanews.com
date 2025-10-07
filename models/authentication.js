@@ -45,9 +45,7 @@ async function getAuthenticatedUser(providedEmail, providedPassword) {
         message: "Senha não confere",
         action: "Verifique se o email e a senha estão digitados corretamente",
       });
-    }
-
-    return storedUser;
+    }    
   }
 }
 
