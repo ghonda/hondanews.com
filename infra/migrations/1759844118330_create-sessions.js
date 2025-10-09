@@ -18,11 +18,11 @@ exports.up = (pgm) => {
       onDelete: "CASCADE",
     },
 
-     expires_at: {
+    expires_at: {
       type: "timestamptz",
       notNull: true,
     },
-    
+
     created_at: {
       type: "timestamptz",
       default: pgm.func("timezone('utc',now())"),

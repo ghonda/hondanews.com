@@ -134,5 +134,4 @@ test("POST to /api/v1/sessions correct password and email 200", async () => {
   created_at.setMilliseconds(0);
 
   expect(expires_at - created_at).toBe(sessions.EXPIRATION_IN_MILLISECONDS);
-
 });

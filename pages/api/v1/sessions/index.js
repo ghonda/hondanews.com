@@ -17,7 +17,7 @@ async function postHandler(request, response) {
     userInputValues.password,
   );
 
-  const newSession = await session.create(authenticatedUser.id)
+  const newSession = await session.create(authenticatedUser.id);
 
   return response.status(201).json(newSession);
 }
