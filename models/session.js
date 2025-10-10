@@ -27,7 +27,7 @@ async function create(userId) {
 async function findOneValidByToken(token) {
   const sessionFound = await runSelectQuery(token);
   return sessionFound;
-  
+
   async function runSelectQuery(token) {
     const results = await database.query({
       text: `SELECT *

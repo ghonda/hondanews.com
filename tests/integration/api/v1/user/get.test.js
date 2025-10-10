@@ -14,7 +14,7 @@ test("GET to /api/v1/user should return 200", async () => {
     username: "UserWithValidSession",
   });
 
-  const sessionObject = await orchestrator.createSession( createdUser.id );
+  const sessionObject = await orchestrator.createSession(createdUser.id);
 
   const response = await fetch("http://localhost:3000/api/v1/user", {
     headers: {
