@@ -1,9 +1,9 @@
 import database from "infra/database.js";
-import orquestrator from "tests/orquestrator";
+import orchestrator from "tests/orchestrator";
 
 beforeAll(async () => {
-  await orquestrator.waitForAllServices();
-  await orquestrator.clearDatabase();
+  await orchestrator.waitForAllServices();
+  await orchestrator.clearDatabase();
 });
 
 database.query("select 1+1;");

@@ -41,11 +41,11 @@ async function createUser(userObject) {
   });
 }
 
-const orquestrator = {
+const orchestrator = {
   waitForAllServices,
   clearDatabase,
   runPendingMigrations,
   createUser,
 };
 
-export default orquestrator;
+export default orchestrator;

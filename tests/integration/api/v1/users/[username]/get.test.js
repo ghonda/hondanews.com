@@ -1,14 +1,14 @@
 import { version as uuidVersion } from "uuid";
-import orquestrator from "tests/orquestrator";
+import orchestrator from "tests/orchestrator";
 
 beforeAll(async () => {
-  await orquestrator.waitForAllServices();
-  await orquestrator.clearDatabase();
-  await orquestrator.runPendingMigrations();
+  await orchestrator.waitForAllServices();
+  await orchestrator.clearDatabase();
+  await orchestrator.runPendingMigrations();
 });
 
 test("Get to /api/v1/[username] should return 200", async () => {
-  await orquestrator.createUser({
+  await orchestrator.createUser({
     username: "MesmoCase",
     email: "mesmo.case@curso.dev",
     password: "senha123",
@@ -35,7 +35,7 @@ test("Get to /api/v1/[username] should return 200", async () => {
 });
 
 test("Get to /api/v1/[username] case mismatch", async () => {
-  await orquestrator.createUser({
+  await orchestrator.createUser({
     username: "CaseDiferente",
     email: "case.diferente@curso.dev",
     password: "senha123",

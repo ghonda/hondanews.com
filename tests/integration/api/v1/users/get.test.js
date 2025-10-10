@@ -9,7 +9,7 @@ beforeAll(async () => {
   await orchestrator.runPendingMigrations();
 });
 
-test("POST to /api/v1/user should return 200", async () => {
+test("GET to /api/v1/user should return 200", async () => {
   const response = await fetch("http://localhost:3000/api/v1/users", {
     method: "POST",
     headers: {

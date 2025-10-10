@@ -1,17 +1,17 @@
 import { version as uuidVersion } from "uuid";
-import orquestrator from "tests/orquestrator";
+import orchestrator from "tests/orchestrator";
 import sessions from "models/session";
 import setCookieParser from "set-cookie-parser";
 import session from "models/session";
 
 beforeAll(async () => {
-  await orquestrator.waitForAllServices();
-  await orquestrator.clearDatabase();
-  await orquestrator.runPendingMigrations();
+  await orchestrator.waitForAllServices();
+  await orchestrator.clearDatabase();
+  await orchestrator.runPendingMigrations();
 });
 
 test("POST to /api/v1/sessions incorrect email 401", async () => {
-  await orquestrator.createUser({
+  await orchestrator.createUser({
     password: "senha-correta",
   });
 
@@ -39,7 +39,7 @@ test("POST to /api/v1/sessions incorrect email 401", async () => {
 });
 
 test("POST to /api/v1/sessions incorrect password 401", async () => {
-  await orquestrator.createUser({
+  await orchestrator.createUser({
     email: "email.correto@curso.dev",
     password: "senha-correta",
   });
@@ -68,7 +68,7 @@ test("POST to /api/v1/sessions incorrect password 401", async () => {
 });
 
 test("POST to /api/v1/sessions incorrect password and email 401", async () => {
-  await orquestrator.createUser({});
+  await orchestrator.createUser({});
 
   const response = await fetch("http://localhost:3000/api/v1/sessions", {
     method: "POST",
@@ -94,7 +94,7 @@ test("POST to /api/v1/sessions incorrect password and email 401", async () => {
 });
 
 test("POST to /api/v1/sessions correct password and email 200", async () => {
-  const createdUser = await orquestrator.createUser({
+  const createdUser = await orchestrator.createUser({
     email: "tudo.correto@curso.dev",
     password: "tudo-correto",
   });
