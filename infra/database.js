@@ -37,7 +37,6 @@ const database = {
 export default database;
 
 function getSSLValues() {
-  console.log("NODE_ENV " + process.env.NODE_ENV);
   if (process.env.POSTGRES_CA) {
     return {
       ca: process.env.POSTGRES_CA,

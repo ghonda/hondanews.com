@@ -16,7 +16,6 @@ async function waitForAllServices() {
     });
 
     async function fetchStatusPage(bail, tryNumber) {
-      console.log(tryNumber);
       const response = await fetch("http://localhost:3000/api/v1/status");
       if (response.status !== 200) {
         throw Error();
@@ -36,7 +35,7 @@ async function runPendingMigrations() {
 async function createUser(userObject) {
   return await user.create({
     username:
-      userObject.username || faker.internet.userName().replace(/[_.-]/g, ""),
+      userObject.username || faker.internet.username().replace(/[_.-]/g, ""),
     email: userObject.email || faker.internet.email(),
     password: userObject.password || "validPassword",
   });
