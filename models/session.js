@@ -40,11 +40,11 @@ async function findOneValidByToken(token) {
     });
 
     if (results.rowCount === 0) {
-          throw new UnauthorizedError({
-            message: "Usuário não possui sessão ativa.",
-            action: "Verifique se o usuário está autenticado e tente novamente.",
-          });
-        }
+      throw new UnauthorizedError({
+        message: "Usuário não possui sessão ativa.",
+        action: "Verifique se o usuário está autenticado e tente novamente.",
+      });
+    }
     return results.rows[0];
   }
 }

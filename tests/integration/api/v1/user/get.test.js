@@ -40,11 +40,12 @@ test("GET to /api/v1/user should return 200", async () => {
 });
 
 test("GET to /api/v1/user nonexistent session", async () => {
-  const nonexistentToken = "3245fa27dbb3a5dff2546342fd4d3b95b56b6ecfc8a68e0d5130b321c34012a4b5cdf3be74cb425b230c004b2b159632";
+  const nonexistentToken =
+    "3245fa27dbb3a5dff2546342fd4d3b95b56b6ecfc8a68e0d5130b321c34012a4b5cdf3be74cb425b230c004b2b159632";
 
   const response = await fetch("http://localhost:3000/api/v1/user", {
     headers: {
-      Cookie: `session_id=${nonexistentToken}`, 
+      Cookie: `session_id=${nonexistentToken}`,
     },
   });
 
@@ -58,11 +59,9 @@ test("GET to /api/v1/user nonexistent session", async () => {
     action: "Verifique se o usuário está autenticado e tente novamente.",
     statusCode: 401,
   });
-
 });
 
 test("GET to /api/v1/user with expired session", async () => {
-
   jest.useFakeTimers({
     now: new Date(Date.now() - session.EXPIRATION_IN_MILLISECONDS),
   });
@@ -73,7 +72,7 @@ test("GET to /api/v1/user with expired session", async () => {
 
   const sessionObject = await orchestrator.createSession(createdUser.id);
 
-  jest.useRealTimers()
+  jest.useRealTimers();
 
   const response = await fetch("http://localhost:3000/api/v1/user", {
     headers: {
