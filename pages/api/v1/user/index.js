@@ -18,5 +18,10 @@ async function getHandler(request, response) {
   controller.setSessionCookie(response, renewedSessionObject.token);
 
   const userFound = await user.findOneById(sessionObject.user_id);
+
+  response.setHeader(
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate, max-age=0",
+  );
   return response.status(200).json(userFound);
 }

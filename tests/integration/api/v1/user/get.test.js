@@ -24,6 +24,9 @@ test("GET to /api/v1/user should return 200", async () => {
 
   expect(response.status).toBe(200);
 
+  const cacheControl = response.headers.get("Cache-Control");
+  expect(cacheControl).toBe("no-store, no-cache, must-revalidate, max-age=0");
+
   const responseBody = await response.json();
 
   expect(responseBody).toEqual({
