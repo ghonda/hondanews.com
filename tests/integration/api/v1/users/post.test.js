@@ -1,12 +1,12 @@
 import { version as uuidVersion } from "uuid";
-import orquestrator from "tests/orquestrator";
+import orchestrator from "tests/orchestrator";
 import user from "models/user.js";
 import password from "models/password.js";
 
 beforeAll(async () => {
-  await orquestrator.waitForAllServices();
-  await orquestrator.clearDatabase();
-  await orquestrator.runPendingMigrations();
+  await orchestrator.waitForAllServices();
+  await orchestrator.clearDatabase();
+  await orchestrator.runPendingMigrations();
 });
 
 test("POST to /api/v1/user should return 200", async () => {
@@ -88,7 +88,7 @@ test("POST to /api/v1/user duplicate email should return 400", async () => {
     name: "ValidationError",
     message: "O email informado já está sendo utilizado",
     action: "Utilize outro email para realizar esta operação.",
-    statusCode: 400,
+    status_code: 400,
   });
 });
 
@@ -127,6 +127,6 @@ test("POST to /api/v1/user duplicate username should return 400", async () => {
     name: "ValidationError",
     message: "O username informado já está sendo utilizado",
     action: "Utilize outro username para realizar esta operação.",
-    statusCode: 400,
+    status_code: 400,
   });
 });

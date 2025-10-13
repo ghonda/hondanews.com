@@ -4,6 +4,7 @@ import { faker } from "@faker-js/faker";
 import database from "infra/database.js";
 import migrator from "models/migrator.js";
 import user from "models/user.js";
+import session from "models/session";
 
 async function waitForAllServices() {
   await waitForWebServer();
@@ -14,8 +15,7 @@ async function waitForAllServices() {
       maxTimeout: 1000,
     });
 
-    async function fetchStatusPage(bail, tryNumber) {
-      console.log(tryNumber);
+    async function fetchStatusPage() {
       const response = await fetch("http://localhost:3000/api/v1/status");
       if (response.status !== 200) {
         throw Error();
@@ -35,17 +35,22 @@ async function runPendingMigrations() {
 async function createUser(userObject) {
   return await user.create({
     username:
-      userObject.username || faker.internet.userName().replace(/[_.-]/g, ""),
+      userObject.username || faker.internet.username().replace(/[_.-]/g, ""),
     email: userObject.email || faker.internet.email(),
     password: userObject.password || "validPassword",
   });
 }
 
-const orquestrator = {
+async function createSession(userId) {
+  return await session.create(userId);
+}
+
+const orchestrator = {
   waitForAllServices,
   clearDatabase,
   runPendingMigrations,
   createUser,
+  createSession,
 };
 
-export default orquestrator;
+export default orchestrator;

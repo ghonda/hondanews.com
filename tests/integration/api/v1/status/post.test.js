@@ -1,7 +1,7 @@
-import orquestrator from "tests/orquestrator";
+import orchestrator from "tests/orchestrator";
 
 beforeAll(async () => {
-  await orquestrator.waitForAllServices();
+  await orchestrator.waitForAllServices();
 });
 
 test("POST to /api/v1/status should return 200", async () => {
@@ -16,6 +16,6 @@ test("POST to /api/v1/status should return 200", async () => {
     name: "MethodNotAllowedError",
     message: "Método não permitido para este endpoint",
     action: "Verifique se o método HTTP enviado é válido para este endpoint",
-    statusCode: 405,
+    status_code: 405,
   });
 });

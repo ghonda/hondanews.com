@@ -1,8 +1,8 @@
-import orquestrator from "tests/orquestrator";
+import orchestrator from "tests/orchestrator";
 
 beforeAll(async () => {
-  await orquestrator.waitForAllServices();
-  await orquestrator.clearDatabase();
+  await orchestrator.waitForAllServices();
+  await orchestrator.clearDatabase();
 });
 
 test("POST to /api/v1/migrations should return 200", async () => {
