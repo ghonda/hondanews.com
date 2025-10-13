@@ -25,7 +25,7 @@ test("PATCH to /api/v1/[username] without user", async () => {
     name: "NotFoundError",
     message: "O username informado não foi encontrado no sistema",
     action: "Verifique se o username está digitado corretamente",
-    statusCode: 404,
+    status_code: 404,
   });
 });
 
@@ -56,7 +56,7 @@ test("PATCH to /api/v1/user duplicate username should return 400", async () => {
     name: "ValidationError",
     message: "O username informado já está sendo utilizado",
     action: "Utilize outro username para realizar esta operação.",
-    statusCode: 400,
+    status_code: 400,
   });
 });
 
@@ -90,7 +90,7 @@ test("PATCH to /api/v1/user duplicate email should return 400", async () => {
     name: "ValidationError",
     message: "O email informado já está sendo utilizado",
     action: "Utilize outro email para realizar esta operação.",
-    statusCode: 400,
+    status_code: 400,
   });
 });
 

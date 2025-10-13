@@ -76,6 +76,6 @@ test("Get to /api/v1/[username] without user", async () => {
     name: "NotFoundError",
     message: "O username informado não foi encontrado no sistema",
     action: "Verifique se o username está digitado corretamente",
-    statusCode: 404,
+    status_code: 404,
   });
 });

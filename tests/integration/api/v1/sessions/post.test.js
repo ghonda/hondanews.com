@@ -34,7 +34,7 @@ test("POST to /api/v1/sessions incorrect email 401", async () => {
     name: "UnauthorizedError",
     message: "Dados de autenticação inválidos",
     action: "Verifique se o email e a senha estão digitados corretamente",
-    statusCode: 401,
+    status_code: 401,
   });
 });
 
@@ -63,7 +63,7 @@ test("POST to /api/v1/sessions incorrect password 401", async () => {
     name: "UnauthorizedError",
     message: "Dados de autenticação inválidos",
     action: "Verifique se o email e a senha estão digitados corretamente",
-    statusCode: 401,
+    status_code: 401,
   });
 });
 
@@ -89,7 +89,7 @@ test("POST to /api/v1/sessions incorrect password and email 401", async () => {
     name: "UnauthorizedError",
     message: "Dados de autenticação inválidos",
     action: "Verifique se o email e a senha estão digitados corretamente",
-    statusCode: 401,
+    status_code: 401,
   });
 });
 

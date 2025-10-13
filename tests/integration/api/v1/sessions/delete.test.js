@@ -1,6 +1,4 @@
-import { version as uuidVersion } from "uuid";
 import orchestrator from "tests/orchestrator";
-import sessions from "models/session";
 import setCookieParser from "set-cookie-parser";
 import session from "models/session";
 
@@ -27,7 +25,7 @@ test("DELETE to /api/v1/sessions With nonexistent session", async () => {
     name: "UnauthorizedError",
     message: "Usuário não possui sessão ativa.",
     action: "Verifique se o usuário está autenticado e tente novamente.",
-    statusCode: 401,
+    status_code: 401,
   });
 });
 
@@ -59,7 +57,7 @@ test("DELETE to /api/v1/sessions With expired session", async () => {
     name: "UnauthorizedError",
     message: "Usuário não possui sessão ativa.",
     action: "Verifique se o usuário está autenticado e tente novamente.",
-    statusCode: 401,
+    status_code: 401,
   });
 });
 
@@ -106,5 +104,23 @@ test("DELETE to /api/v1/sessions With valid session", async () => {
     maxAge: -1,
     path: "/",
     httpOnly: true,
+  });
+
+  // Double check assertions
+  const doubleCheckResponse = await fetch("http://localhost:3000/api/v1/user", {
+    headers: {
+      Cookie: `session_id=${sessionObject.token}`,
+    },
+  });
+
+  expect(doubleCheckResponse.status).toBe(401);
+
+  const doubleCheckResponseBody = await doubleCheckResponse.json();
+
+  expect(doubleCheckResponseBody).toEqual({
+    name: "UnauthorizedError",
+    message: "Usuário não possui sessão ativa.",
+    action: "Verifique se o usuário está autenticado e tente novamente.",
+    status_code: 401,
   });
 });

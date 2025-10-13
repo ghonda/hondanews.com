@@ -15,7 +15,14 @@ function onErrorHandler(error, request, response) {
     error instanceof NotFoundError ||
     error instanceof UnauthorizedError
   ) {
-    return response.status(error.statusCode).json(error);
+    if (error instanceof ValidationError || error instanceof NotFoundError) {
+      return response.status(error.status_code).json(error);
+    }
+
+    if (error instanceof UnauthorizedError) {
+      clearSessionCookie(response);
+      return response.status(error.status_code).json(error);
+    }
   }
 
   const publicErrorObject = new InternalServerError({
@@ -23,12 +30,12 @@ function onErrorHandler(error, request, response) {
   });
   console.error(publicErrorObject);
 
-  response.status(publicErrorObject.statusCode).json(publicErrorObject);
+  response.status(publicErrorObject.status_code).json(publicErrorObject);
 }
 
 function onNoMatchHandler(request, response) {
   const publicErrorObject = new MethodNotAllowedError();
-  response.status(publicErrorObject.statusCode).json(publicErrorObject);
+  response.status(publicErrorObject.status_code).json(publicErrorObject);
 }
 
 async function setSessionCookie(response, sessionToken) {
