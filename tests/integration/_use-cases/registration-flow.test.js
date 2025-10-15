@@ -32,7 +32,7 @@ describe("Use case: Registration Flow (all successful)", () => {
       username: "RegistrationFlow",
       email: "registrationflow@example.com",
       password: createUserResponseBody.password,
-      features: [],
+      features: ["read:activation_token"],
       created_at: createUserResponseBody.created_at,
       updated_at: createUserResponseBody.updated_at,
     });

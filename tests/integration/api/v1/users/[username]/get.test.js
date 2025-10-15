@@ -25,7 +25,7 @@ test("Get to /api/v1/[username] should return 200", async () => {
     username: "MesmoCase",
     email: "mesmo.case@curso.dev",
     password: response2Body.password,
-    features: [],
+    features: ["read:activation_token"],
     created_at: response2Body.created_at,
     updated_at: response2Body.updated_at,
   });
@@ -55,7 +55,7 @@ test("Get to /api/v1/[username] case mismatch", async () => {
     username: "CaseDiferente",
     email: "case.diferente@curso.dev",
     password: response2Body.password,
-    features: [],
+    features: ["read:activation_token"],
     created_at: response2Body.created_at,
     updated_at: response2Body.updated_at,
   });
