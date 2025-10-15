@@ -30,6 +30,7 @@ test("POST to /api/v1/user should return 200", async () => {
     username: "ghonda",
     email: "contato@curso.dev",
     password: responseBody.password,
+    features: [],
     created_at: responseBody.created_at,
     updated_at: responseBody.updated_at,
   });

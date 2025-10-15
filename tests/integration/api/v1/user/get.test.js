@@ -34,6 +34,7 @@ test("GET to /api/v1/user should return 200", async () => {
     username: "UserWithValidSession",
     email: createdUser.email,
     password: createdUser.password,
+    features: [],
     created_at: createdUser.created_at.toISOString(),
     updated_at: createdUser.updated_at.toISOString(),
   });

@@ -122,6 +122,7 @@ test("PATCH to /api/v1/user unique username should return 200", async () => {
     username: "uniqueUser2",
     email: "uniqueUser1@curso.dev",
     password: responseBody.password,
+    features: [],
     created_at: responseBody.created_at,
     updated_at: responseBody.updated_at,
   });
@@ -161,6 +162,7 @@ test("PATCH to /api/v1/user unique email should return 200", async () => {
     username: "uniqueEmail1",
     email: "uniqueEmail2@curso.dev",
     password: responseBody.password,
+    features: [],
     created_at: responseBody.created_at,
     updated_at: responseBody.updated_at,
   });
@@ -200,6 +202,7 @@ test("PATCH to /api/v1/user new password should return 200", async () => {
     username: "newPassword1",
     email: "newPassword1@curso.dev",
     password: responseBody.password,
+    features: [],
     created_at: responseBody.created_at,
     updated_at: responseBody.updated_at,
   });
