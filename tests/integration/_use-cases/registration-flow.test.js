@@ -9,17 +9,20 @@ beforeAll(async () => {
 
 describe("Use case: Registration Flow (all successful)", () => {
   test("Create user account", async () => {
-    const createUserResponse = await fetch("http://localhost:3000/api/v1/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const createUserResponse = await fetch(
+      "http://localhost:3000/api/v1/users",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: "RegistrationFlow",
+          email: "registrationflow@example.com",
+          password: "RegistrationFlowPassword",
+        }),
       },
-      body: JSON.stringify({
-        username: "RegistrationFlow",
-        email: "registrationflow@example.com",
-        password: "RegistrationFlowPassword",
-      }),
-    });
+    );
 
     expect(createUserResponse.status).toBe(201);
 
