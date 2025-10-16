@@ -1,7 +1,6 @@
 import email from "infra/email.js";
 import database from "infra/database.js";
 import webserver from "infra/webserver.js";
-import { finished } from "nodemailer/lib/xoauth2";
 
 const EXPIRATION_IN_MILLISECONDS = 60 * 15 * 1000; // 15 minutes
 
