@@ -51,11 +51,13 @@ describe("Use case: Registration Flow (all successful)", () => {
 
     const activationTokenId = orchestrator.extractUUID(lastEmail.text);
 
-    expect(lastEmail.text).toContain(`${webserver.origin}/cadastro/ativar/${activationTokenId}`);
-    const activationTokenObject = await activation.findOneValidById(activationTokenId);
+    expect(lastEmail.text).toContain(
+      `${webserver.origin}/cadastro/ativar/${activationTokenId}`,
+    );
+    const activationTokenObject =
+      await activation.findOneValidById(activationTokenId);
 
     expect(activationTokenObject.user_id).toBe(createUserResponseBody.id);
     expect(activationTokenObject.used_at).toBe(null);
-    
   });
 });
