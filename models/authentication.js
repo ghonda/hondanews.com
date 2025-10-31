@@ -3,54 +3,54 @@ import password from "models/password.js";
 import { NotFoundError, UnauthorizedError } from "infra/errors.js";
 
 async function getAuthenticatedUser(providedEmail, providedPassword) {
-  try {
-    const storedUser = await findUserByEmail(providedEmail);
-    await validatePassword(providedPassword, storedUser.password);
-    return storedUser;
-  } catch (error) {
-    if (error instanceof UnauthorizedError) {
-      throw new UnauthorizedError({
-        message: "Dados de autenticação inválidos",
-        action: "Verifique se o email e a senha estão digitados corretamente",
-      });
-    }
-    throw error;
-  }
-
-  async function findUserByEmail(providedEmail) {
-    let storedUser;
-
     try {
-      storedUser = await user.findOneByEmail(providedEmail);
+        const storedUser = await findUserByEmail(providedEmail);
+        await validatePassword(providedPassword, storedUser.password);
+        return storedUser;
     } catch (error) {
-      if (error instanceof NotFoundError) {
-        throw new UnauthorizedError({
-          message: "Email não confere",
-          action: "Verifique se o email e a senha estão digitados corretamente",
-        });
-      }
-      throw error;
+        if (error instanceof UnauthorizedError) {
+            throw new UnauthorizedError({
+                message: "Dados de autenticação inválidos",
+                action: "Verifique se o email e a senha estão digitados corretamente",
+            });
+        }
+        throw error;
     }
 
-    return storedUser;
-  }
+    async function findUserByEmail(providedEmail) {
+        let storedUser;
 
-  async function validatePassword(providedPassword, storedPassword) {
-    const correctPasswordMatch = await password.compare(
-      providedPassword,
-      storedPassword,
-    );
-    if (!correctPasswordMatch) {
-      throw new UnauthorizedError({
-        message: "Senha não confere",
-        action: "Verifique se o email e a senha estão digitados corretamente",
-      });
+        try {
+            storedUser = await user.findOneByEmail(providedEmail);
+        } catch (error) {
+            if (error instanceof NotFoundError) {
+                throw new UnauthorizedError({
+                    message: "Email não confere",
+                    action: "Verifique se o email e a senha estão digitados corretamente",
+                });
+            }
+            throw error;
+        }
+
+        return storedUser;
     }
-  }
+
+    async function validatePassword(providedPassword, storedPassword) {
+        const correctPasswordMatch = await password.compare(
+            providedPassword,
+            storedPassword,
+        );
+        if (!correctPasswordMatch) {
+            throw new UnauthorizedError({
+                message: "Senha não confere",
+                action: "Verifique se o email e a senha estão digitados corretamente",
+            });
+        }
+    }
 }
 
 const authentication = {
-  getAuthenticatedUser,
+    getAuthenticatedUser,
 };
 
 export default authentication;

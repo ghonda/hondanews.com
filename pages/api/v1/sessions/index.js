@@ -12,25 +12,25 @@ router.delete(deleteHandler);
 export default router.handler(controller.errorHandlers);
 
 async function postHandler(request, response) {
-  const userInputValues = request.body;
+    const userInputValues = request.body;
 
-  const authenticatedUser = await authentication.getAuthenticatedUser(
-    userInputValues.email,
-    userInputValues.password,
-  );
+    const authenticatedUser = await authentication.getAuthenticatedUser(
+        userInputValues.email,
+        userInputValues.password,
+    );
 
-  const newSession = await session.create(authenticatedUser.id);
+    const newSession = await session.create(authenticatedUser.id);
 
-  controller.setSessionCookie(response, newSession.token);
+    controller.setSessionCookie(response, newSession.token);
 
-  return response.status(201).json(newSession);
+    return response.status(201).json(newSession);
 }
 
 async function deleteHandler(request, response) {
-  const sessionToken = request.cookies.session_id;
-  const sessionObject = await session.findOneValidByToken(sessionToken);
-  const expiredSession = await session.expireById(sessionObject.id);
-  controller.clearSessionCookie(response);
+    const sessionToken = request.cookies.session_id;
+    const sessionObject = await session.findOneValidByToken(sessionToken);
+    const expiredSession = await session.expireById(sessionObject.id);
+    controller.clearSessionCookie(response);
 
-  return response.status(200).json(expiredSession);
+    return response.status(200).json(expiredSession);
 }
