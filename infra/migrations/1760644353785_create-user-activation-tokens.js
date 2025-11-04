@@ -1,40 +1,33 @@
 exports.up = (pgm) => {
-    pgm.createTable("sessions", {
+    pgm.createTable("user_activation_tokens", {
         id: {
             type: "uuid",
             primaryKey: true,
             default: pgm.func("gen_random_uuid()"),
         },
-
-        token: {
-            type: "varchar(96)",
-            notNull: true,
-            unique: true,
+        used_at: {
+            type: "timestamp",
+            notNull: false,
         },
-
         user_id: {
             type: "uuid",
             notNull: true,
-            onDelete: "CASCADE",
         },
-
         expires_at: {
-            type: "timestamptz",
+            type: "timestamp",
             notNull: true,
         },
-
         created_at: {
-            type: "timestamptz",
-            default: pgm.func("timezone('utc',now())"),
+            type: "timestamp",
             notNull: true,
+            default: pgm.func("timezone('utc', now())"),
         },
-
         updated_at: {
-            type: "timestamptz",
-            default: pgm.func("timezone('utc',now())"),
+            type: "timestamp",
             notNull: true,
+            default: pgm.func("timezone('utc', now())"),
         },
     });
 };
 
-exports.down = false;
+exports.down = () => false;

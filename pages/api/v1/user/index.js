@@ -10,18 +10,18 @@ router.get(getHandler);
 export default router.handler(controller.errorHandlers);
 
 async function getHandler(request, response) {
-  const sessionToken = request.cookies.session_id;
+    const sessionToken = request.cookies.session_id;
 
-  const sessionObject = await session.findOneValidByToken(sessionToken);
+    const sessionObject = await session.findOneValidByToken(sessionToken);
 
-  const renewedSessionObject = await session.renew(sessionObject.id);
-  controller.setSessionCookie(response, renewedSessionObject.token);
+    const renewedSessionObject = await session.renew(sessionObject.id);
+    controller.setSessionCookie(response, renewedSessionObject.token);
 
-  const userFound = await user.findOneById(sessionObject.user_id);
+    const userFound = await user.findOneById(sessionObject.user_id);
 
-  response.setHeader(
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate, max-age=0",
-  );
-  return response.status(200).json(userFound);
+    response.setHeader(
+        "Cache-Control",
+        "no-store, no-cache, must-revalidate, max-age=0",
+    );
+    return response.status(200).json(userFound);
 }
