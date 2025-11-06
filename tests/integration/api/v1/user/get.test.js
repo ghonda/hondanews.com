@@ -14,6 +14,8 @@ test("GET to /api/v1/user should return 200", async () => {
         username: "UserWithValidSession",
     });
 
+    const activatedUser = await orchestrator.activateUser(createdUser);
+
     const sessionObject = await orchestrator.createSession(createdUser.id);
 
     const response = await fetch("http://localhost:3000/api/v1/user", {
@@ -34,9 +36,9 @@ test("GET to /api/v1/user should return 200", async () => {
         username: "UserWithValidSession",
         email: createdUser.email,
         password: createdUser.password,
-        features: ["read:activation_token"],
+        features: ["create:session", "read:session"],
         created_at: createdUser.created_at.toISOString(),
-        updated_at: createdUser.updated_at.toISOString(),
+        updated_at: activatedUser.updated_at.toISOString(),
     });
 
     expect(uuidVersion(responseBody.id)).toBe(4);

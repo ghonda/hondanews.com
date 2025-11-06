@@ -1,10 +1,10 @@
 import retry from "async-retry";
 import { faker } from "@faker-js/faker";
-
 import database from "infra/database.js";
 import migrator from "models/migrator.js";
 import user from "models/user.js";
 import session from "models/session";
+import activation from "models/activation.js";
 
 const emailHttpUrl = `http://${process.env.SMTP_HTTP_HOST}:${process.env.SMTP_HTTP_PORT}`;
 
@@ -94,6 +94,10 @@ function extractUUID(text) {
     return match ? match[0] : null;
 }
 
+async function activateUser(user) {
+    return await activation.activateUserByUserId(user.id);
+}
+
 const orchestrator = {
     waitForAllServices,
     clearDatabase,
@@ -103,6 +107,7 @@ const orchestrator = {
     createSession,
     getLastEmail,
     extractUUID,
+    activateUser,
 };
 
 export default orchestrator;
