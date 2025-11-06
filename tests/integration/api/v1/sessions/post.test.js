@@ -3,7 +3,6 @@ import orchestrator from "tests/orchestrator";
 import sessions from "models/session";
 import setCookieParser from "set-cookie-parser";
 import session from "models/session";
-import activation from "models/activation";
 
 beforeAll(async () => {
     await orchestrator.waitForAllServices();
@@ -100,7 +99,7 @@ test("POST to /api/v1/sessions correct password and email 200", async () => {
         password: "tudo-correto",
     });
 
-    await activation.activateUserByUserId(createdUser.id);
+    await orchestrator.activateUser(createdUser);
 
     const response = await fetch("http://localhost:3000/api/v1/sessions", {
         method: "POST",
