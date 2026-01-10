@@ -82,7 +82,6 @@ async function activateUserByUserId(userId) {
     const activatedUser = await user.setFeatures(userId, [
         "create:session",
         "read:session",
-        "create:user",
     ]);
     return activatedUser;
 }
