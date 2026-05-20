@@ -36,7 +36,19 @@ function filterOutput(user, feature, resource) {
                 user_id: resource.user_id,
                 created_at: resource.created_at,
                 updated_at: resource.updated_at,
+                expires_at: resource.expires_at,
             };
+        }
+    }
+
+    if (feature === "read:activation_token") {
+        return {
+            id: resource.id,
+            user_id: resource.user_id,
+            created_at: resource.created_at,  
+            updated_at: resource.updated_at,
+            expires_at: resource.expires_at,
+            used_at: resource.used_at,
         }
     }
 

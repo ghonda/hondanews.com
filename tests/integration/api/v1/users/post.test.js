@@ -29,7 +29,6 @@ test("POST to /api/v1/user should return 200", async () => {
         id: responseBody.id,
         username: "ghonda",
         features: ["read:activation_token"],
-        email: "contato@curso.dev",
         created_at: responseBody.created_at,
         updated_at: responseBody.updated_at,
     });
