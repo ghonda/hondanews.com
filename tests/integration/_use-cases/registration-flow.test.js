@@ -38,7 +38,6 @@ describe("Use case: Registration Flow (all successful)", () => {
             id: createUserResponseBody.id,
             username: "RegistrationFlow",
             email: "registrationflow@example.com",
-            password: createUserResponseBody.password,
             features: ["read:activation_token"],
             created_at: createUserResponseBody.created_at,
             updated_at: createUserResponseBody.updated_at,
@@ -120,6 +119,7 @@ describe("Use case: Registration Flow (all successful)", () => {
 
         const userResponseBody = await userResponse.json();
 
+        console.log(userResponseBody);
         expect(userResponseBody.id).toBe(createUserResponseBody.id);
     });
 });

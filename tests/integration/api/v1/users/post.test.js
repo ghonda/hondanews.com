@@ -28,9 +28,8 @@ test("POST to /api/v1/user should return 200", async () => {
     expect(responseBody).toEqual({
         id: responseBody.id,
         username: "ghonda",
-        email: "contato@curso.dev",
-        password: responseBody.password,
         features: ["read:activation_token"],
+        email: "contato@curso.dev",
         created_at: responseBody.created_at,
         updated_at: responseBody.updated_at,
     });
