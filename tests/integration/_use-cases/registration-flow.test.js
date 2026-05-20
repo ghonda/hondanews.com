@@ -83,6 +83,7 @@ describe("Use case: Registration Flow (all successful)", () => {
         expect(activatedUser.features).toEqual([
             "create:session",
             "read:session",
+            "update:user",
         ]);
     });
 
