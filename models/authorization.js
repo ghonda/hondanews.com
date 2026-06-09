@@ -61,6 +61,33 @@ function filterOutput(user, feature, resource) {
             updated_at: resource.updated_at,
         };
     }
+
+    if (feature === "read:migration") {
+        return resource.map((migration) => {
+            return {
+                path: migration.path,
+                name: migration.name,
+                timestamp: migration.timestamp,
+            };
+        });
+    }
+
+    if (feature === "read:status") {
+        const output = {
+            update_at: resource.update_at,
+            dependencies: {
+                database :{
+                    max_connections: resource.dependencies.database.max_connections,
+                    opened_connections: resource.dependencies.database.opened_connections,
+                }
+            }
+        }
+
+        if (can(user, "read:status:all")) {
+            output.dependencies.database.version = resource.dependencies.database.version;
+        }
+        return output;
+    }
 }
 
 const authorization = {
