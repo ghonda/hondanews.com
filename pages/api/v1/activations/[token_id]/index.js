@@ -5,6 +5,7 @@ import authorization from "models/authorization";
 
 const router = createRouter();
 
+router.use(controller.injectAnonymousOrUser);
 router.patch(patchHandler);
 
 export default router.handler(controller.errorHandlers);
@@ -20,7 +21,7 @@ async function patchHandler(request, response) {
     await activation.activateUserByUserId(validActivationToken.user_id);
 
     const secureOutputValues = authorization.filterOutput(
-        request.user,
+        request.context.user,
         "read:activation_token",
         usedActivationToken,
     );

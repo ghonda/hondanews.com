@@ -44,7 +44,7 @@ async function getHandler(request, response) {
                 opened_connections: databaseOpenedConnectionsValue,
             },
         },
-    }
+    };
 
     const secureOutputValues = authorization.filterOutput(
         userTryingToGet,

@@ -25,7 +25,6 @@ async function getHandler(request, response) {
 }
 
 async function postHandler(request, response) {
-
     const userTryingToPost = request.context.user;
 
     const migratedMigrations = await migrator.runPendingMigrations();

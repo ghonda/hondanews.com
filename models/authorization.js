@@ -1,4 +1,33 @@
+import { InternalServerError } from "infra/errors";
+
+const availableFeatures = [
+    // USER
+    "create:user",
+    "read:user",
+    "read:user:self",
+    "update:user",
+    "update:user:others",
+
+    // SESSION
+    "create:session",
+    "read:session",
+
+    // ACTIVATION TOKEN
+    "read:activation_token",
+
+    // MIGRATION
+    "create:migration",
+    "read:migration",
+
+    // STATUS
+    "read:status",
+    "read:status:all",
+];
+
 function can(user, feature, resource) {
+    validateUser(user);
+    validateFeature(feature);
+
     let authorized = false;
     if (user.features.includes(feature)) {
         authorized = true;
@@ -15,6 +44,10 @@ function can(user, feature, resource) {
 }
 
 function filterOutput(user, feature, resource) {
+    validateUser(user);
+    validateFeature(feature);
+    validateResource(resource);
+
     if (feature === "read:user:self") {
         if (user.id === resource.id) {
             return {
@@ -76,17 +109,44 @@ function filterOutput(user, feature, resource) {
         const output = {
             update_at: resource.update_at,
             dependencies: {
-                database :{
-                    max_connections: resource.dependencies.database.max_connections,
-                    opened_connections: resource.dependencies.database.opened_connections,
-                }
-            }
-        }
+                database: {
+                    max_connections:
+                        resource.dependencies.database.max_connections,
+                    opened_connections:
+                        resource.dependencies.database.opened_connections,
+                },
+            },
+        };
 
         if (can(user, "read:status:all")) {
-            output.dependencies.database.version = resource.dependencies.database.version;
+            output.dependencies.database.version =
+                resource.dependencies.database.version;
         }
         return output;
+    }
+}
+
+function validateUser(user) {
+    if (!user || !user.features) {
+        throw new InternalServerError({
+            cause: "É necessário fornecer um `user` no model `authorization`.",
+        });
+    }
+}
+
+function validateFeature(feature) {
+    if (!feature || !availableFeatures.includes(feature)) {
+        throw new InternalServerError({
+            cause: "É necessário fornecer um `feature` conhecida no model `authorization`.",
+        });
+    }
+}
+
+function validateResource(resource) {
+    if (!resource) {
+        throw new InternalServerError({
+            cause: "É necessário fornecer um `resource` em `authorization.filterOutput`.",
+        });
     }
 }
 
