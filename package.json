@@ -53,8 +53,8 @@
         "set-cookie-parser": "2.7.1"
     },
     "config": {
-        "commitizen":{
-            "path" : "./node_modules/cz-conventional-changelog"
+        "commitizen": {
+            "path": "./node_modules/cz-conventional-changelog"
         }
     },
     "engines": {
