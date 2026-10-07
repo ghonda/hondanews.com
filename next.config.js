@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    // uuid >= 12 is ESM-only; transpile it so Jest (CommonJS) can load it
-    transpilePackages: ["uuid"],
+    // ESM-only packages; transpile them so Jest (CommonJS) can load them
+    transpilePackages: ["uuid", "@faker-js/faker"],
 };
 
 module.exports = nextConfig;
