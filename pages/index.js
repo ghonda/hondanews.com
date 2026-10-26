@@ -1,517 +1,423 @@
 import Head from "next/head";
-import { useEffect, useRef, useState } from "react";
+import CareerGame from "components/careerGame";
 
-const capabilities = [
+const contacts = [
     {
-        title: "Produto digital",
-        description:
-            "Traduzo problemas em fluxos simples, com atenção ao valor e ao uso.",
-        diagram: "product",
+        label: "E-mail",
+        href: "mailto:guilhermehonda@gmail.com",
+        text: "guilhermehonda@gmail.com",
     },
     {
-        title: "Arquitetura",
-        description:
-            "Organizo responsabilidades, integrações e decisões para reduzir complexidade.",
-        diagram: "architecture",
+        label: "LinkedIn",
+        href: "https://www.linkedin.com/in/guilherme-honda",
+        text: "linkedin.com/in/guilherme-honda",
     },
     {
-        title: "Interfaces",
-        description:
-            "Transformo regras e dados em experiências claras, rápidas e acessíveis.",
-        diagram: "interface",
+        label: "GitHub",
+        href: "https://github.com/ghonda",
+        text: "github.com/ghonda",
     },
 ];
 
-const processSteps = [
+const repositories = [
     {
-        title: "Ler o contexto",
-        description:
-            "Antes do código, entendo o problema, as pessoas e os limites do sistema.",
+        href: "https://github.com/ghonda/hondanews.com",
+        text: "hondanews.com",
+        note: "JavaScript · este site",
     },
     {
-        title: "Desenhar a estrutura",
-        description:
-            "Organizo ideias em fluxos, responsabilidades e decisões que podem ser explicadas.",
+        href: "https://github.com/ghonda/Fiap5NETT",
+        text: "Fiap5NETT",
+        note: "C#",
     },
     {
-        title: "Construir com clareza",
-        description:
-            "Transformo a estrutura em software legível, testável e pronto para evoluir.",
+        href: "https://github.com/ghonda/MM-SOLID",
+        text: "MM-SOLID",
+        note: "C#",
     },
     {
-        title: "Refinar no uso",
-        description:
-            "Observo o que funciona, removo atrito e faço a solução amadurecer.",
-    },
-];
-
-const focusNotes = [
-    {
-        label: "Estrutura",
-        title: "Antes da solução, o mapa do problema.",
-    },
-    {
-        label: "Sistemas",
-        title: "Complexidade sob controle, sem esconder o essencial.",
-    },
-    {
-        label: "Interfaces",
-        title: "Quando a experiência explica o produto.",
+        href: "https://github.com/ghonda/DesignerPatters",
+        text: "DesignerPatters",
+        note: "C#",
     },
 ];
 
-const flowSteps = [
+const skills = [
+    "C#",
+    ".NET",
+    "ASP.NET MVC",
+    ".NET Core",
+    "SQL Server",
+    "PostgreSQL",
+    "MySQL",
+    "Azure",
+    "C++",
+    "Delphi",
+    "JavaScript",
+    "Python",
+];
+
+// Order matters: the game lays these out left to right as the level.
+const stops = [
     {
-        id: "code",
-        label: "Código",
-        description: "A ideia ganha uma primeira forma executável.",
+        kind: "education",
+        year: 2008,
+        label: "UNINOVE",
+        title: "Gestão em Redes de Computadores",
+        org: "UNINOVE",
+        period: "2008 – 2010",
+        details: [],
     },
     {
-        id: "structure",
-        label: "Estrutura",
-        description: "Responsabilidades e relações organizam o sistema.",
+        kind: "education",
+        year: 2009,
+        label: "FATEC",
+        title: "Análise de Sistemas",
+        org: "FATEC São Caetano do Sul",
+        period: "2009 – 2012",
+        details: [],
     },
     {
-        id: "interface",
-        label: "Interface",
-        description: "A lógica se torna clara para quem usa.",
+        kind: "course",
+        label: "CURSOS",
+        title: "Cursos e certificações",
+        org: "Impacta Certificações · BFBiz",
+        period: "Formação complementar",
+        details: [
+            "SQL Server 2008",
+            "Programação Orientada a Objeto",
+            "C# Módulos I e II",
+            "Programming in C# with Microsoft VS 2010",
+            "Developing Data Access Solutions",
+            "Developing ASP.NET MVC 4 Web Applications",
+        ],
     },
     {
-        id: "product",
-        label: "Produto",
-        description: "O conjunto resolve um problema no mundo real.",
+        kind: "job",
+        year: 2011,
+        label: "LEVELUP!",
+        title: "Desenvolvedor .NET",
+        org: "LevelUP! Interactive S.A.",
+        period: "Dez 2011 – Abr 2015",
+        details: [
+            "Softwares web internos e externos e serviços Windows",
+            "Manutenção e novas implementações em sistemas legados e front-end",
+            "Relatórios e procedures em SQL Server e MySQL",
+        ],
+    },
+    {
+        kind: "trip",
+        year: 2015,
+        label: "DUBLIN",
+        title: "Intercâmbio na Irlanda",
+        org: "Seda College · Dublin",
+        period: "Abr 2015 – Dez 2015",
+        details: ["Curso de imersão no idioma inglês"],
+    },
+    {
+        kind: "job",
+        year: 2016,
+        label: "FUNÇÃO",
+        title: "Desenvolvedor C# / Delphi",
+        org: "Função Informática",
+        period: "Jan 2016 – Abr 2016",
+        details: [
+            "Novas aplicações e manutenção do legado em ASP.NET Web Forms, Windows Forms e Delphi",
+            "Relatórios para bancos",
+            "Procedures em SQL Server",
+            "Documentação de software e testes",
+        ],
+    },
+    {
+        kind: "job",
+        year: 2016,
+        label: "EVAL",
+        title: "Desenvolvedor C# e C++",
+        org: "Eval Tecnologia",
+        period: "Ago 2016 – Abr 2018",
+        details: [
+            "Novas funções e manutenção do sistema de assinatura e certificados digitais",
+            "Suporte a sistemas legados",
+            "Testes integrados",
+        ],
+    },
+    {
+        kind: "job",
+        year: 2018,
+        label: "FULLBAR",
+        title: "Desenvolvedor .NET",
+        org: "Fullbar Digital",
+        period: "Abr 2018 – Nov 2018",
+        details: [
+            "APIs para aplicativos mobile",
+            "Websites com ASP.NET MVC Core",
+            "Testes unitários",
+        ],
+    },
+    {
+        kind: "job",
+        year: 2018,
+        label: "NEGOCIE",
+        title: "Desenvolvedor .NET",
+        org: "Negocie Online",
+        period: "Nov 2018 – Mai 2019",
+        details: [
+            "APIs com .NET Core",
+            "Arquitetura de banco de dados PostgreSQL",
+        ],
+    },
+    {
+        kind: "job",
+        year: 2019,
+        label: "MINDMINERS",
+        title: "Desenvolvedor .NET",
+        org: "MindMiners",
+        period: "Mai 2019 – atual",
+        details: ["Novas features e manutenção das aplicações MeSeems"],
+    },
+    {
+        kind: "education",
+        year: 2022,
+        label: "UNINOVE",
+        title: "Análise e Desenvolvimento de Sistemas",
+        org: "UNINOVE",
+        period: "2022 – 2024",
+        details: [],
+    },
+    {
+        kind: "education",
+        year: 2024,
+        label: "FIAP",
+        title: "Arquitetura de Sistemas .NET com Azure",
+        org: "FIAP",
+        period: "2024 – 2025",
+        details: [],
+    },
+    {
+        kind: "github",
+        label: "GITHUB",
+        title: "Código aberto",
+        org: "Estudos e projetos públicos no GitHub",
+        period: "Repositórios",
+        details: [],
+        links: repositories.map((repo) => ({
+            href: repo.href,
+            text: `${repo.text} · ${repo.note}`,
+        })),
+    },
+    {
+        kind: "contact",
+        label: "CONTATO",
+        title: "Fim da fase!",
+        org: "Obrigado por jogar. Vamos conversar?",
+        period: "Contato",
+        details: [],
+        links: contacts,
     },
 ];
 
-const flowPermutations = [
-    ["interface", "code", "product", "structure"],
-    ["product", "structure", "code", "interface"],
-    ["structure", "interface", "product", "code"],
-];
+const experience = stops.filter((s) => s.kind === "job" || s.kind === "trip");
+const education = stops.filter((s) => s.kind === "education");
+const courses = stops.find((s) => s.kind === "course");
 
-function ArrowIcon({ diagonal = false }) {
-    return (
-        <svg
-            aria-hidden="true"
-            className="arrowIcon"
-            viewBox="0 0 24 24"
-            fill="none"
-        >
-            <path
-                d={diagonal ? "M7 17 17 7M8 7h9v9" : "M5 12h14M14 7l5 5-5 5"}
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="square"
-                strokeLinejoin="miter"
-            />
-        </svg>
-    );
-}
+const gameIntro = (
+    <>
+        <p className="dialogMeta">Como jogar</p>
+        <h2 className="dialogTitle">Bata nos blocos ? por baixo</h2>
+        <p className="dialogOrg">
+            Cada bloco guarda uma etapa da minha carreira. Os canos são a
+            formação, as moedas são as tecnologias que uso e os bugs pelo
+            caminho você corrige pulando em cima.
+        </p>
+    </>
+);
 
-function CapabilityDiagram({ type }) {
-    if (type === "product") {
-        return (
-            <svg aria-hidden="true" viewBox="0 0 240 150" className="diagram">
-                <circle cx="94" cy="75" r="48" />
-                <circle cx="146" cy="75" r="48" strokeDasharray="5 7" />
-                <circle className="diagramDot" cx="120" cy="75" r="5" />
-                <path d="M120 18v114" strokeDasharray="2 9" />
-            </svg>
-        );
-    }
-
-    if (type === "architecture") {
-        return (
-            <svg aria-hidden="true" viewBox="0 0 240 150" className="diagram">
-                <path d="m120 22 68 32-68 32-68-32 68-32Z" />
-                <path d="m188 76-68 32-68-32" />
-                <path d="m188 98-68 32-68-32" />
-                <path d="M120 86v44" strokeDasharray="3 7" />
-                <circle className="diagramDot" cx="120" cy="86" r="5" />
-            </svg>
-        );
-    }
-
-    return (
-        <svg aria-hidden="true" viewBox="0 0 240 150" className="diagram">
-            <rect x="56" y="49" width="82" height="72" />
-            <rect x="103" y="28" width="82" height="72" strokeDasharray="5 7" />
-            <path d="M38 75h164" strokeDasharray="2 9" />
-            <rect
-                className="diagramFill"
-                x="116"
-                y="68"
-                width="10"
-                height="10"
-            />
-        </svg>
-    );
-}
-
-function FlowGame() {
-    const [round, setRound] = useState(0);
-    const [selected, setSelected] = useState([]);
-    const [status, setStatus] = useState("idle");
-    const [mistakes, setMistakes] = useState(0);
-    const [elapsedTenths, setElapsedTenths] = useState(0);
-    const [message, setMessage] = useState(
-        "O cronômetro começa na primeira escolha.",
-    );
-    const startedAt = useRef(0);
-
-    useEffect(() => {
-        if (status !== "playing") {
-            return undefined;
-        }
-
-        const timer = window.setInterval(() => {
-            setElapsedTenths(
-                Math.max(
-                    1,
-                    Math.round((performance.now() - startedAt.current) / 100),
-                ),
-            );
-        }, 100);
-
-        return () => window.clearInterval(timer);
-    }, [status]);
-
-    const orderedChoices = flowPermutations[round].map((id) =>
-        flowSteps.find((step) => step.id === id),
-    );
-    const score = Math.max(100, 1000 - mistakes * 100 - elapsedTenths * 2);
-
-    function chooseStep(step) {
-        if (status === "complete" || selected.includes(step.id)) {
-            return;
-        }
-
-        const now = performance.now();
-
-        if (status === "idle") {
-            startedAt.current = now;
-            setStatus("playing");
-        }
-
-        const expectedStep = flowSteps[selected.length];
-
-        if (step.id !== expectedStep.id) {
-            setMistakes((current) => current + 1);
-            setMessage(
-                `${step.label} entra depois. Procure a etapa ${String(selected.length + 1).padStart(2, "0")}.`,
-            );
-            return;
-        }
-
-        const nextSelected = [...selected, step.id];
-        setSelected(nextSelected);
-
-        if (nextSelected.length === flowSteps.length) {
-            const finalTime = Math.max(
-                1,
-                Math.round((now - startedAt.current) / 100),
-            );
-            setElapsedTenths(finalTime);
-            setStatus("complete");
-            setMessage("Fluxo resolvido. Cada etapa preparou a próxima.");
-            return;
-        }
-
-        setMessage(
-            `Etapa ${String(nextSelected.length).padStart(2, "0")} certa. Continue o fluxo.`,
-        );
-    }
-
-    function restartGame() {
-        setRound((current) => (current + 1) % flowPermutations.length);
-        setSelected([]);
-        setStatus("idle");
-        setMistakes(0);
-        setElapsedTenths(0);
-        setMessage("O cronômetro começa na primeira escolha.");
-        startedAt.current = 0;
-    }
-
-    return (
-        <section className="flowGame" aria-labelledby="flow-game-title">
-            <div className="gameIntro">
-                <h2 id="flow-game-title">Monte o fluxo.</h2>
-                <p>
-                    Selecione os quatro blocos na ordem em que uma ideia se
-                    transforma em uma experiência útil.
-                </p>
-
-                <dl className="gameStats" aria-label="Placar da rodada">
-                    <div>
-                        <dt>Tempo</dt>
-                        <dd>{(elapsedTenths / 10).toFixed(1)}s</dd>
-                    </div>
-                    <div>
-                        <dt>Erros</dt>
-                        <dd>{String(mistakes).padStart(2, "0")}</dd>
-                    </div>
-                    <div>
-                        <dt>Pontos</dt>
-                        <dd>{status === "complete" ? score : "—"}</dd>
-                    </div>
-                </dl>
-            </div>
-
-            <div
-                className={`gameBoard ${status === "complete" ? "isComplete" : ""}`}
-            >
-                <div className="gameBoardHeader">
-                    <p>Escolha a próxima etapa</p>
-                    <span aria-live="polite">{message}</span>
-                </div>
-
-                <ol className="flowSlots" aria-label="Fluxo montado">
-                    {flowSteps.map((step, index) => {
-                        const isFilled = selected[index] === step.id;
-
-                        return (
-                            <li
-                                className={isFilled ? "isFilled" : ""}
-                                key={step.id}
-                            >
-                                <span>
-                                    {String(index + 1).padStart(2, "0")}
-                                </span>
-                                <strong>
-                                    {isFilled ? step.label : "Aguardando"}
-                                </strong>
-                            </li>
-                        );
-                    })}
-                </ol>
-
-                <div className="gameChoices" aria-label="Etapas disponíveis">
-                    {orderedChoices.map((step) => {
-                        const isSelected = selected.includes(step.id);
-
-                        return (
-                            <button
-                                type="button"
-                                disabled={isSelected || status === "complete"}
-                                onClick={() => chooseStep(step)}
-                                key={step.id}
-                            >
-                                <span>{step.label}</span>
-                                <small>{step.description}</small>
-                            </button>
-                        );
-                    })}
-                </div>
-
-                <div className="gameBoardFooter">
-                    <span>
-                        {selected.length} de {flowSteps.length} etapas
-                    </span>
-                    <button type="button" onClick={restartGame}>
-                        {status === "complete"
-                            ? "Jogar novamente"
-                            : "Reiniciar"}
-                        <ArrowIcon />
-                    </button>
-                </div>
-            </div>
-        </section>
-    );
-}
-
-function Home() {
-    const designContract = `<!--
-THESIS: A developer portfolio reads like a confident editorial cover and refuses the floating-card hero.
-OWN-WORLD: Off-white, graphite and cobalt fields; sharp modular regions, hairline rules and exact geometric diagrams.
-STORY: Visitors identify a software developer, understand three practice areas, follow a four-step approach and encounter themes worth discussing.
-FIRST VIEWPORT: A thin navigation sits above a nine-column headline, right-anchored support copy, a cobalt action strip and the beginning of a dark practice section.
-FORM: Category canon, editorial stack; seed key 0ca7f44b.
-FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
--->`;
-
+export default function Home() {
     return (
         <>
             <Head>
-                <title>Honda News — Desenvolvimento de Software</title>
+                <title>Guilherme Honda — Desenvolvedor .NET</title>
                 <meta
                     name="description"
-                    content="Honda News é uma página autoral sobre desenvolvimento de software, arquitetura, produto e interfaces."
+                    content="Portfólio de Guilherme Honda, desenvolvedor .NET em São Paulo, apresentado como um jogo de plataforma."
                 />
                 <meta
                     name="viewport"
                     content="width=device-width, initial-scale=1"
                 />
+                <meta name="theme-color" content="#14101e" />
             </Head>
 
+            <a className="skipLink" href="#curriculo">
+                Pular o jogo e ler o currículo
+            </a>
+
+            <header className="siteHeader">
+                <a className="wordmark" href="#top">
+                    HONDA NEWS
+                </a>
+                <nav aria-label="Links">
+                    <a href="#curriculo">Currículo</a>
+                    {contacts.map((contact) => (
+                        <a key={contact.href} href={contact.href}>
+                            {contact.label}
+                        </a>
+                    ))}
+                </nav>
+            </header>
+
             <main id="top">
-                <div
-                    className="designContract"
-                    dangerouslySetInnerHTML={{ __html: designContract }}
-                />
-
-                <header className="siteHeader">
-                    <a
-                        className="wordmark"
-                        href="#top"
-                        aria-label="Honda News, início"
-                    >
-                        Honda News
-                        <span aria-hidden="true" className="wordmarkDot" />
-                    </a>
-
-                    <nav aria-label="Navegação principal">
-                        <a href="#trabalho">Trabalho</a>
-                        <a href="#sobre">Sobre</a>
-                        <a href="#notas">Notas</a>
-                    </nav>
-
-                    <a className="headerAction" href="#contato">
-                        <span>Contato</span>
-                        <ArrowIcon diagonal />
-                    </a>
-                </header>
-
-                <section className="hero" aria-labelledby="hero-title">
-                    <h1 id="hero-title">
-                        <span>Software</span>
-                        <span className="heroSecondLine">
-                            <span>com</span>{" "}
-                            <span className="titleEnd">
-                                contexto
-                                <span className="titleDot" aria-hidden="true" />
-                            </span>
-                        </span>
-                    </h1>
-
-                    <p className="heroIntro">
-                        Sou desenvolvedor de software. Crio produtos digitais
-                        com estrutura, clareza e intenção.
+                <section className="intro">
+                    <h1>Guilherme Honda</h1>
+                    <p>
+                        Desenvolvedor .NET em São Paulo. Minha trajetória virou
+                        uma fase: ande, bata nos blocos{" "}
+                        <span className="qMark" aria-hidden="true">
+                            ?
+                        </span>{" "}
+                        e colete as tecnologias.
                     </p>
                 </section>
 
-                <div className="actionRail">
-                    <a href="#sobre" className="primaryAction">
-                        Ver abordagem <ArrowIcon />
-                    </a>
-
-                    <div className="route" aria-label="Do código ao produto">
-                        <span>código</span>
-                        <i aria-hidden="true" />
-                        <span>estrutura</span>
-                        <i aria-hidden="true" />
-                        <span>interface</span>
-                        <i aria-hidden="true" />
-                        <span>produto</span>
-                    </div>
-                </div>
+                <CareerGame stops={stops} skills={skills} intro={gameIntro} />
+                <p id="game-help" className="gameHelp">
+                    <kbd>←</kbd> <kbd>→</kbd> ou <kbd>A</kbd> <kbd>D</kbd> para
+                    andar · <kbd>Espaço</kbd> para pular · <kbd>Esc</kbd> para
+                    pausar
+                </p>
 
                 <section
-                    id="trabalho"
-                    className="capabilities"
-                    aria-labelledby="work-title"
+                    id="curriculo"
+                    className="resume"
+                    aria-labelledby="resume-title"
                 >
-                    <div className="sectionIntro darkIntro">
-                        <h2 id="work-title">O que eu faço</h2>
-                        <p>
-                            Da primeira pergunta ao detalhe final, cada decisão
-                            precisa ajudar o produto a fazer sentido.
-                        </p>
-                    </div>
+                    <h2 id="resume-title">Currículo</h2>
+                    <p className="resumeLead">
+                        Tudo o que está no jogo, em texto corrido.
+                    </p>
 
-                    <div className="capabilityGrid">
-                        {capabilities.map((capability) => (
-                            <article
-                                className="capability"
-                                key={capability.title}
-                            >
-                                <div>
-                                    <h3>{capability.title}</h3>
-                                    <p>{capability.description}</p>
-                                </div>
-                                <CapabilityDiagram type={capability.diagram} />
+                    <div className="resumeGrid">
+                        <article className="panel">
+                            <h3>Experiência</h3>
+                            <ol className="timeline">
+                                {[...experience].reverse().map((item) => (
+                                    <li key={item.org}>
+                                        <span className="period">
+                                            {item.period}
+                                        </span>
+                                        <span className="role">
+                                            {item.title}
+                                        </span>
+                                        <span className="org">{item.org}</span>
+                                        <ul>
+                                            {item.details.map((detail) => (
+                                                <li key={detail}>{detail}</li>
+                                            ))}
+                                        </ul>
+                                    </li>
+                                ))}
+                            </ol>
+                        </article>
+
+                        <div className="sideStack">
+                            <article className="panel">
+                                <h3>Formação</h3>
+                                <ol className="timeline">
+                                    {[...education].reverse().map((item) => (
+                                        <li key={item.title}>
+                                            <span className="period">
+                                                {item.period}
+                                            </span>
+                                            <span className="role">
+                                                {item.title}
+                                            </span>
+                                            <span className="org">
+                                                {item.org}
+                                            </span>
+                                        </li>
+                                    ))}
+                                </ol>
                             </article>
-                        ))}
-                    </div>
-                </section>
 
-                <section
-                    id="sobre"
-                    className="process"
-                    aria-labelledby="process-title"
-                >
-                    <div className="sectionIntro lightIntro">
-                        <h2 id="process-title">Como eu trabalho</h2>
-                        <p>
-                            Um processo direto para transformar contexto em
-                            decisões e decisões em software.
-                        </p>
-                    </div>
-
-                    <ol className="processGrid">
-                        {processSteps.map((step, index) => (
-                            <li key={step.title}>
-                                <span className="stepNumber" aria-hidden="true">
-                                    {String(index + 1).padStart(2, "0")}
-                                </span>
-                                <div>
-                                    <h3>{step.title}</h3>
-                                    <p>{step.description}</p>
-                                </div>
-                            </li>
-                        ))}
-                    </ol>
-                </section>
-
-                <FlowGame />
-
-                <section
-                    id="notas"
-                    className="notes"
-                    aria-labelledby="notes-title"
-                >
-                    <div className="notesHeading">
-                        <h2 id="notes-title">Ideias, sistemas e detalhes.</h2>
-                        <p>
-                            Temas que orientam meu olhar sobre software — sem
-                            atalhos, jargão vazio ou complexidade por aparência.
-                        </p>
-                    </div>
-
-                    <div className="noteIndex" aria-label="Temas em foco">
-                        {focusNotes.map((note, index) => (
-                            <article key={note.label}>
-                                <span className="noteMeta">
-                                    {String(index + 1).padStart(2, "0")} ·{" "}
-                                    {note.label}
-                                </span>
-                                <h3>{note.title}</h3>
-                                <span className="noteMark" aria-hidden="true" />
+                            <article className="panel">
+                                <h3>Tecnologias</h3>
+                                <ul className="chips">
+                                    {skills.map((skill) => (
+                                        <li key={skill}>{skill}</li>
+                                    ))}
+                                </ul>
                             </article>
-                        ))}
+
+                            <article className="panel">
+                                <h3>{courses.title}</h3>
+                                <p className="org">{courses.org}</p>
+                                <ul className="plainList">
+                                    {courses.details.map((detail) => (
+                                        <li key={detail}>{detail}</li>
+                                    ))}
+                                </ul>
+                            </article>
+
+                            <article className="panel">
+                                <h3>Idiomas</h3>
+                                <ul className="plainList">
+                                    <li>Português — nativo</li>
+                                    <li>Inglês — intermediário</li>
+                                </ul>
+                            </article>
+
+                            <article className="panel">
+                                <h3>No GitHub</h3>
+                                <ul className="plainList">
+                                    {repositories.map((repo) => (
+                                        <li key={repo.href}>
+                                            <a href={repo.href}>{repo.text}</a>{" "}
+                                            <span className="org">
+                                                {repo.note}
+                                            </span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </article>
+
+                            <article className="panel" id="contato">
+                                <h3>Contato</h3>
+                                <ul className="plainList">
+                                    {contacts.map((contact) => (
+                                        <li key={contact.href}>
+                                            <a href={contact.href}>
+                                                {contact.text}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </article>
+                        </div>
                     </div>
                 </section>
-
-                <footer id="contato" className="footer">
-                    <p>Honda News</p>
-                    <h2>Software bom começa com uma pergunta bem feita.</h2>
-                    <a href="#top">
-                        Voltar ao início <ArrowIcon diagonal />
-                    </a>
-                    <span className="footerNote">
-                        Desenvolvimento de software · Produto · Arquitetura ·
-                        Interfaces
-                    </span>
-                </footer>
             </main>
+
+            <footer className="siteFooter">
+                <span>© {new Date().getFullYear()} Guilherme Honda</span>
+                <span>Personagem e cenário originais em pixel art.</span>
+            </footer>
 
             <style jsx global>{`
                 :root {
-                    --paper: #f7f7f5;
-                    --ink: #111111;
-                    --blue: #2f5bff;
-                    --line: #d7d9de;
-                    --muted: #666a73;
-                    --dark-muted: #b5b7bd;
+                    --night: #14101e;
+                    --night-raised: #2a2440;
+                    --paper: #fff8e7;
+                    --ink: #14101e;
+                    --muted: #5b5670;
+                    --soft: #a9a3c2;
+                    --coin: #f8d030;
+                    --brick: #c0602f;
+                    --blue: #1565c0;
+                    --question: #f6b40e;
+                    --question-edge: #7a3e00;
+                    --sky: #6b8cff;
+                    --pixel: "Press Start 2P", monospace;
+                    --sans: "Archivo", system-ui, sans-serif;
                 }
 
                 * {
@@ -520,1009 +426,498 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
                 html {
                     scroll-behavior: smooth;
-                    background: var(--paper);
-                }
-
-                body {
-                    margin: 0;
-                    background: var(--paper);
-                    color: var(--ink);
-                    font-family: "Archivo", "Helvetica Neue", sans-serif;
-                    font-synthesis: none;
-                    text-rendering: optimizeLegibility;
-                }
-
-                a {
-                    color: inherit;
-                    text-decoration: none;
-                }
-
-                a:focus-visible {
-                    outline: 3px solid var(--blue);
-                    outline-offset: 5px;
-                }
-
-                ::selection {
-                    background: var(--blue);
-                    color: white;
-                }
-
-                .designContract {
-                    display: contents;
-                }
-
-                .siteHeader {
-                    align-items: center;
-                    background: rgba(247, 247, 245, 0.96);
-                    border-bottom: 1px solid var(--line);
-                    display: grid;
-                    grid-template-columns: 1fr auto 1fr;
-                    min-height: 76px;
-                    padding: 0 4.5vw;
-                    position: relative;
-                    z-index: 10;
-                }
-
-                .wordmark {
-                    align-items: center;
-                    display: inline-flex;
-                    font-size: 1.2rem;
-                    font-weight: 700;
-                    letter-spacing: -0.03em;
-                    width: max-content;
-                }
-
-                .wordmarkDot {
-                    background: var(--blue);
-                    display: inline-block;
-                    height: 6px;
-                    margin-left: 8px;
-                    width: 6px;
-                }
-
-                nav {
-                    display: flex;
-                    gap: clamp(1.75rem, 4vw, 4.5rem);
-                    justify-content: center;
-                }
-
-                nav a {
-                    color: #3b3d42;
-                    font-size: 0.91rem;
-                    position: relative;
-                }
-
-                nav a::after {
-                    background: var(--ink);
-                    bottom: -7px;
-                    content: "";
-                    height: 1px;
-                    left: 0;
-                    position: absolute;
-                    transform: scaleX(0);
-                    transform-origin: left;
-                    transition: transform 220ms ease;
-                    width: 100%;
-                }
-
-                nav a:hover::after,
-                nav a:focus-visible::after {
-                    transform: scaleX(1);
-                }
-
-                .headerAction {
-                    align-items: center;
-                    border: 1px solid var(--ink);
-                    display: flex;
-                    font-size: 0.72rem;
-                    font-weight: 650;
-                    gap: 0.8rem;
-                    height: 46px;
-                    justify-self: end;
-                    justify-content: center;
-                    letter-spacing: 0.12em;
-                    min-width: 124px;
-                    padding: 0 1rem;
-                    text-transform: uppercase;
-                    transition:
-                        background 180ms ease,
-                        color 180ms ease;
-                }
-
-                .headerAction:hover {
-                    background: var(--ink);
-                    color: white;
-                }
-
-                .arrowIcon {
-                    height: 20px;
-                    width: 20px;
-                }
-
-                .hero {
-                    display: grid;
-                    grid-template-columns: repeat(12, minmax(0, 1fr));
-                    min-height: clamp(390px, 44vh, 500px);
-                    padding: clamp(3.5rem, 6vw, 6rem) 5.25vw
-                        clamp(2.5rem, 4vw, 4rem);
-                    position: relative;
-                }
-
-                .hero::before {
-                    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
-                    content: "";
-                    inset: 0;
-                    opacity: 0.035;
-                    pointer-events: none;
-                    position: absolute;
-                }
-
-                .hero h1 {
-                    align-self: start;
-                    font-size: clamp(5rem, 8.35vw, 7.5rem);
-                    font-stretch: 120%;
-                    font-weight: 790;
-                    grid-column: 1 / 11;
-                    letter-spacing: -0.04em;
-                    line-height: 0.92;
-                    margin: 0;
-                    max-width: none;
-                    text-wrap: balance;
-                }
-
-                .hero h1 > span {
-                    display: block;
-                }
-
-                .heroSecondLine {
-                    position: relative;
-                    width: max-content;
-                }
-
-                .titleEnd {
-                    white-space: nowrap;
-                }
-
-                .titleDot {
-                    background: var(--blue);
-                    display: inline-block;
-                    height: 0.22em;
-                    margin-left: 0.08em;
-                    width: 0.22em;
-                }
-
-                .heroIntro {
-                    align-self: end;
-                    color: #33363c;
-                    font-size: clamp(1.15rem, 1.75vw, 1.65rem);
-                    font-weight: 360;
-                    grid-column: 9 / 13;
-                    line-height: 1.3;
-                    margin: 0 0 0.35rem;
-                    max-width: 24ch;
-                }
-
-                .actionRail {
-                    align-items: stretch;
-                    background: var(--blue);
-                    color: white;
-                    display: grid;
-                    grid-template-columns: minmax(280px, 29%) 1fr;
-                    min-height: 92px;
-                }
-
-                .primaryAction {
-                    align-items: center;
-                    border-right: 1px solid rgba(255, 255, 255, 0.32);
-                    display: flex;
-                    font-size: 0.78rem;
-                    font-weight: 650;
-                    gap: 1.2rem;
-                    justify-content: space-between;
-                    letter-spacing: 0.18em;
-                    padding: 0 5.25vw;
-                    text-transform: uppercase;
-                }
-
-                .primaryAction .arrowIcon {
-                    transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1);
-                }
-
-                .primaryAction:hover .arrowIcon {
-                    transform: translateX(8px);
-                }
-
-                .primaryAction:focus-visible,
-                .footer a:focus-visible {
-                    outline-color: white;
-                    outline-offset: -6px;
-                }
-
-                .route {
-                    align-items: center;
-                    display: grid;
-                    font-size: 1rem;
-                    gap: clamp(0.75rem, 2vw, 2.1rem);
-                    grid-template-columns: auto 1fr auto 1fr auto 1fr auto;
-                    padding: 0 5.25vw;
-                }
-
-                .route i {
-                    background: rgba(255, 255, 255, 0.62);
-                    height: 1px;
-                    overflow: visible;
-                    position: relative;
-                }
-
-                .route i::after {
-                    border-right: 1px solid white;
-                    border-top: 1px solid white;
-                    content: "";
-                    height: 6px;
-                    position: absolute;
-                    right: 0;
-                    top: -3px;
-                    transform: rotate(45deg);
-                    width: 6px;
-                }
-
-                .capabilities {
-                    background: var(--ink);
-                    color: white;
-                    padding: clamp(3rem, 4vw, 4rem) 5.25vw 0;
-                }
-
-                .capabilities .sectionIntro {
-                    margin-bottom: clamp(2rem, 2.5vw, 3rem);
-                }
-
-                .sectionIntro {
-                    align-items: end;
-                    display: grid;
-                    gap: 3rem;
-                    grid-template-columns: 2fr 1fr;
-                    margin-bottom: clamp(3rem, 5vw, 5rem);
-                }
-
-                .sectionIntro h2,
-                .notes h2,
-                .footer h2 {
-                    font-size: clamp(2.9rem, 5vw, 5.4rem);
-                    font-stretch: 105%;
-                    font-weight: 720;
-                    letter-spacing: -0.04em;
-                    line-height: 0.98;
-                    margin: 0;
-                    text-wrap: balance;
-                }
-
-                .sectionIntro p {
-                    font-size: clamp(1rem, 1.35vw, 1.25rem);
-                    line-height: 1.5;
-                    margin: 0;
-                    max-width: 33ch;
-                }
-
-                .darkIntro p {
-                    color: var(--dark-muted);
-                }
-
-                .capabilityGrid {
-                    border-left: 1px solid #4c4d52;
-                    display: grid;
-                    grid-template-columns: repeat(3, 1fr);
-                }
-
-                .capability {
-                    border-right: 1px solid #4c4d52;
-                    border-top: 1px solid #4c4d52;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-between;
-                    min-height: 420px;
-                    padding: clamp(2rem, 3.2vw, 3.75rem);
-                    transition: background-color 220ms ease;
-                }
-
-                .capability:hover {
-                    background: #181818;
-                }
-
-                .capability h3,
-                .process h3,
-                .notes h3 {
-                    font-size: clamp(1.55rem, 2.3vw, 2.3rem);
-                    font-weight: 520;
-                    letter-spacing: -0.035em;
-                    line-height: 1.05;
-                    margin: 0;
-                }
-
-                .capability p {
-                    color: var(--dark-muted);
-                    font-size: 1rem;
-                    line-height: 1.55;
-                    margin: 1.1rem 0 0;
-                    max-width: 29ch;
-                }
-
-                .diagram {
-                    align-self: center;
-                    fill: none;
-                    height: auto;
-                    margin-top: 3rem;
-                    max-width: 260px;
-                    stroke: #dfe0e4;
-                    stroke-width: 1;
-                    width: 74%;
-                }
-
-                .diagramDot,
-                .diagramFill {
-                    fill: var(--blue);
-                    stroke: var(--blue);
-                }
-
-                .process {
-                    padding: clamp(6rem, 10vw, 10rem) 5.25vw;
-                }
-
-                .lightIntro p {
-                    color: var(--muted);
-                }
-
-                .processGrid {
-                    border-left: 1px solid var(--line);
-                    border-top: 1px solid var(--line);
-                    display: grid;
-                    grid-template-columns: repeat(4, 1fr);
-                    list-style: none;
-                    margin: 0;
-                    padding: 0;
-                }
-
-                .processGrid li {
-                    border-bottom: 1px solid var(--line);
-                    border-right: 1px solid var(--line);
-                    display: grid;
-                    gap: 2.25rem;
-                    grid-template-rows: auto 1fr;
-                    min-height: 300px;
-                    padding: 2rem;
-                }
-
-                .stepNumber {
-                    color: var(--blue);
-                    font-size: 0.82rem;
-                    font-weight: 650;
-                    letter-spacing: 0.08em;
-                }
-
-                .process h3 {
-                    font-size: clamp(1.3rem, 1.8vw, 1.8rem);
-                }
-
-                .process li p {
-                    color: var(--muted);
-                    line-height: 1.55;
-                    margin: 1rem 0 0;
-                }
-
-                .flowGame {
-                    border-top: 1px solid var(--line);
-                    display: grid;
-                    gap: clamp(3rem, 6vw, 7rem);
-                    grid-template-columns: 0.82fr 1.68fr;
-                    padding: clamp(6rem, 10vw, 10rem) 5.25vw;
-                }
-
-                .gameIntro h2 {
-                    font-size: clamp(2.9rem, 5vw, 5.4rem);
-                    font-stretch: 105%;
-                    font-weight: 720;
-                    letter-spacing: -0.04em;
-                    line-height: 0.98;
-                    margin: 0;
-                    max-width: 8ch;
-                    text-wrap: balance;
-                }
-
-                .gameIntro > p {
-                    color: var(--muted);
-                    line-height: 1.55;
-                    margin: 2rem 0 0;
-                    max-width: 35ch;
-                }
-
-                .gameStats {
-                    border-top: 1px solid var(--ink);
-                    display: grid;
-                    grid-template-columns: repeat(3, 1fr);
-                    margin: clamp(3rem, 5vw, 5rem) 0 0;
-                }
-
-                .gameStats div {
-                    border-bottom: 1px solid var(--line);
-                    min-width: 0;
-                    padding: 1.1rem 0;
-                }
-
-                .gameStats dt {
-                    color: var(--muted);
-                    font-size: 0.68rem;
-                    font-weight: 650;
-                    letter-spacing: 0.12em;
-                    margin-bottom: 0.55rem;
-                    text-transform: uppercase;
-                }
-
-                .gameStats dd {
-                    font-size: clamp(1.15rem, 1.8vw, 1.6rem);
-                    font-weight: 520;
-                    letter-spacing: -0.03em;
-                    margin: 0;
-                }
-
-                .gameBoard {
-                    background: var(--ink);
-                    color: white;
-                    min-width: 0;
-                    padding: clamp(1.5rem, 3vw, 3rem);
-                    position: relative;
-                }
-
-                .gameBoard::after {
-                    background: var(--blue);
-                    content: "";
-                    height: 8px;
-                    position: absolute;
-                    right: 0;
-                    top: 0;
-                    transition: width 500ms cubic-bezier(0.16, 1, 0.3, 1);
-                    width: 0;
-                }
-
-                .gameBoard.isComplete::after {
-                    width: 100%;
-                }
-
-                .gameBoardHeader {
-                    align-items: start;
-                    display: grid;
-                    gap: 1.5rem;
-                    grid-template-columns: 0.8fr 1.2fr;
-                    margin-bottom: clamp(2rem, 4vw, 4rem);
-                }
-
-                .gameBoardHeader p {
-                    font-size: 0.72rem;
-                    font-weight: 650;
-                    letter-spacing: 0.12em;
-                    margin: 0;
-                    text-transform: uppercase;
-                }
-
-                .gameBoardHeader span {
-                    color: var(--dark-muted);
-                    line-height: 1.45;
-                    min-height: 2.9em;
-                }
-
-                .flowSlots {
-                    display: grid;
-                    grid-template-columns: repeat(4, 1fr);
-                    list-style: none;
-                    margin: 0 0 clamp(2rem, 4vw, 4rem);
-                    padding: 0;
-                }
-
-                .flowSlots li {
-                    border-bottom: 1px solid #4c4d52;
-                    color: #777980;
-                    display: grid;
-                    gap: 0.65rem;
-                    min-width: 0;
-                    padding: 0 0.8rem 1rem 0;
-                    position: relative;
-                    transition:
-                        border-color 220ms ease,
-                        color 220ms ease;
-                }
-
-                .flowSlots li::after {
-                    background: #4c4d52;
-                    bottom: -4px;
-                    content: "";
-                    height: 7px;
-                    position: absolute;
-                    right: 0;
-                    width: 7px;
-                }
-
-                .flowSlots li.isFilled {
-                    border-color: var(--blue);
-                    color: white;
-                }
-
-                .flowSlots li.isFilled::after {
-                    background: var(--blue);
-                }
-
-                .flowSlots li > span {
-                    font-size: 0.68rem;
-                    letter-spacing: 0.08em;
-                }
-
-                .flowSlots strong {
-                    font-size: clamp(0.8rem, 1.2vw, 1rem);
-                    font-weight: 520;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                }
-
-                .gameChoices {
-                    border-left: 1px solid #4c4d52;
-                    border-top: 1px solid #4c4d52;
-                    display: grid;
-                    grid-template-columns: repeat(2, 1fr);
-                }
-
-                .gameChoices button {
-                    align-items: start;
-                    appearance: none;
-                    background: transparent;
-                    border: 0;
-                    border-bottom: 1px solid #4c4d52;
-                    border-radius: 0;
-                    border-right: 1px solid #4c4d52;
-                    color: white;
-                    cursor: pointer;
-                    display: flex;
-                    flex-direction: column;
-                    font: inherit;
-                    gap: 0.7rem;
-                    min-height: 132px;
-                    padding: 1.4rem;
-                    text-align: left;
-                    transition:
-                        background-color 180ms ease,
-                        color 180ms ease;
-                }
-
-                .gameChoices button:hover:not(:disabled) {
-                    background: var(--blue);
-                }
-
-                .gameChoices button:focus-visible,
-                .gameBoardFooter button:focus-visible {
-                    outline: 3px solid white;
-                    outline-offset: -6px;
-                }
-
-                .gameChoices button:disabled {
-                    color: #777980;
-                    cursor: default;
-                }
-
-                .gameChoices button:disabled small {
-                    color: #66686e;
-                }
-
-                .gameChoices button > span {
-                    font-size: clamp(1.2rem, 1.8vw, 1.65rem);
-                    font-weight: 520;
-                    letter-spacing: -0.03em;
-                }
-
-                .gameChoices small {
-                    color: var(--dark-muted);
-                    font-size: 0.88rem;
-                    line-height: 1.4;
-                    max-width: 30ch;
-                    transition: color 180ms ease;
-                }
-
-                .gameChoices button:hover:not(:disabled) small {
-                    color: white;
-                }
-
-                .gameBoardFooter {
-                    align-items: center;
-                    display: flex;
-                    justify-content: space-between;
-                    margin-top: 1.5rem;
-                }
-
-                .gameBoardFooter > span {
-                    color: var(--dark-muted);
-                    font-size: 0.75rem;
-                    letter-spacing: 0.08em;
-                    text-transform: uppercase;
-                }
-
-                .gameBoardFooter button {
-                    align-items: center;
-                    appearance: none;
-                    background: transparent;
-                    border: 1px solid #6a6c72;
-                    border-radius: 0;
-                    color: white;
-                    cursor: pointer;
-                    display: flex;
-                    font: inherit;
-                    font-size: 0.72rem;
-                    font-weight: 650;
-                    gap: 1.25rem;
-                    justify-content: space-between;
-                    letter-spacing: 0.12em;
-                    min-height: 48px;
-                    padding: 0 1rem;
-                    text-transform: uppercase;
-                    transition:
-                        background-color 180ms ease,
-                        color 180ms ease;
-                }
-
-                .gameBoardFooter button:hover {
-                    background: white;
-                    color: var(--ink);
-                }
-
-                .notes {
-                    border-top: 1px solid var(--line);
-                    display: grid;
-                    gap: clamp(3rem, 6vw, 7rem);
-                    grid-template-columns: 0.9fr 1.6fr;
-                    padding: clamp(6rem, 10vw, 10rem) 5.25vw;
-                }
-
-                .notesHeading p {
-                    color: var(--muted);
-                    line-height: 1.55;
-                    margin: 2rem 0 0;
-                    max-width: 38ch;
-                }
-
-                .noteIndex {
-                    border-top: 1px solid var(--ink);
-                }
-
-                .noteIndex article {
-                    align-items: center;
-                    border-bottom: 1px solid var(--line);
-                    display: grid;
-                    gap: 1.5rem;
-                    grid-template-columns: 8rem 1fr auto;
-                    min-height: 145px;
-                    padding: 1.5rem 0;
-                }
-
-                .noteMeta {
-                    color: var(--muted);
-                    font-size: 0.72rem;
-                    letter-spacing: 0.12em;
-                    text-transform: uppercase;
-                }
-
-                .notes h3 {
-                    font-size: clamp(1.35rem, 2vw, 2rem);
-                    max-width: 27ch;
-                }
-
-                .noteMark {
-                    background: var(--blue);
-                    display: block;
-                    height: 12px;
-                    width: 12px;
-                }
-
-                .footer {
-                    background: var(--blue);
-                    color: white;
-                    display: grid;
-                    gap: 3rem;
-                    grid-template-columns: 1fr auto;
-                    padding: clamp(4rem, 7vw, 7rem) 5.25vw 2.5rem;
-                }
-
-                .footer > p {
-                    font-size: 1rem;
-                    font-weight: 650;
-                    grid-column: 1 / -1;
-                    margin: 0;
-                }
-
-                .footer h2 {
-                    max-width: 14ch;
-                }
-
-                .footer > a {
-                    align-items: center;
-                    align-self: end;
-                    border: 1px solid rgba(255, 255, 255, 0.72);
-                    display: flex;
-                    gap: 2rem;
-                    min-height: 56px;
-                    padding: 0 1.5rem;
-                    transition:
-                        background 180ms ease,
-                        color 180ms ease;
-                }
-
-                .footer > a:hover {
-                    background: white;
-                    color: var(--blue);
-                }
-
-                .footerNote {
-                    border-top: 1px solid rgba(255, 255, 255, 0.35);
-                    font-size: 0.76rem;
-                    grid-column: 1 / -1;
-                    letter-spacing: 0.08em;
-                    padding-top: 1.5rem;
-                    text-transform: uppercase;
-                }
-
-                @keyframes titleReveal {
-                    from {
-                        clip-path: inset(0 0 100% 0);
-                        filter: blur(5px);
-                        transform: translateY(18px);
-                    }
-                    to {
-                        clip-path: inset(0 0 0 0);
-                        filter: blur(0);
-                        transform: translateY(0);
-                    }
-                }
-
-                @media (prefers-reduced-motion: no-preference) {
-                    .heroSecondLine {
-                        animation: titleReveal 800ms
-                            cubic-bezier(0.16, 1, 0.3, 1) 100ms both;
-                    }
-                }
-
-                @media (max-width: 980px) {
-                    .hero {
-                        min-height: 540px;
-                    }
-
-                    .hero h1 {
-                        grid-column: 1 / 11;
-                    }
-
-                    .heroIntro {
-                        grid-column: 8 / 13;
-                    }
-
-                    .route {
-                        font-size: 0.85rem;
-                        gap: 0.8rem;
-                    }
-
-                    .capability {
-                        min-height: 370px;
-                    }
-
-                    .processGrid {
-                        grid-template-columns: repeat(2, 1fr);
-                    }
-
-                    .notes {
-                        grid-template-columns: 1fr;
-                    }
-
-                    .flowGame {
-                        grid-template-columns: 1fr;
-                    }
-
-                    .gameIntro {
-                        display: grid;
-                        gap: 2rem;
-                        grid-template-columns: 1fr 1fr;
-                    }
-
-                    .gameIntro > p,
-                    .gameStats {
-                        margin-top: 0;
-                    }
-
-                    .gameStats {
-                        grid-column: 1 / -1;
-                    }
-                }
-
-                @media (max-width: 720px) {
-                    .siteHeader {
-                        grid-template-columns: 1fr auto;
-                        min-height: 68px;
-                        padding: 0 1.25rem;
-                    }
-
-                    nav {
-                        display: none;
-                    }
-
-                    .headerAction {
-                        height: 44px;
-                        min-width: 112px;
-                    }
-
-                    .hero {
-                        display: block;
-                        min-height: 580px;
-                        padding: 4rem 1.25rem 3rem;
-                    }
-
-                    .hero h1 {
-                        font-size: clamp(3.55rem, 16vw, 5rem);
-                        line-height: 0.93;
-                    }
-
-                    .heroSecondLine {
-                        width: auto;
-                    }
-
-                    .heroIntro {
-                        font-size: 1.25rem;
-                        margin-top: 5rem;
-                        max-width: 24ch;
-                    }
-
-                    .actionRail {
-                        display: flex;
-                        flex-direction: column;
-                    }
-
-                    .primaryAction {
-                        border-bottom: 1px solid rgba(255, 255, 255, 0.32);
-                        border-right: 0;
-                        min-height: 76px;
-                        padding: 0 1.25rem;
-                    }
-
-                    .route {
-                        display: flex;
-                        flex-wrap: wrap;
-                        gap: 0.55rem;
-                        justify-content: space-between;
-                        min-height: 88px;
-                        padding: 1.25rem;
-                    }
-
-                    .route i {
-                        flex: 1;
-                        min-width: 20px;
-                    }
-
-                    .capabilities,
-                    .process,
-                    .flowGame,
-                    .notes {
-                        padding-left: 1.25rem;
-                        padding-right: 1.25rem;
-                    }
-
-                    .sectionIntro {
-                        align-items: start;
-                        grid-template-columns: 1fr;
-                    }
-
-                    .sectionIntro h2,
-                    .gameIntro h2,
-                    .notes h2,
-                    .footer h2 {
-                        font-size: clamp(2.8rem, 13vw, 4.5rem);
-                    }
-
-                    .gameIntro {
-                        display: block;
-                    }
-
-                    .gameIntro > p {
-                        margin-top: 1.5rem;
-                    }
-
-                    .gameStats {
-                        margin-top: 2.5rem;
-                    }
-
-                    .gameBoard {
-                        margin-left: -1.25rem;
-                        margin-right: -1.25rem;
-                        padding: 2rem 1.25rem;
-                    }
-
-                    .gameBoardHeader {
-                        grid-template-columns: 1fr;
-                    }
-
-                    .flowSlots {
-                        grid-template-columns: repeat(2, 1fr);
-                        row-gap: 1.5rem;
-                    }
-
-                    .gameChoices {
-                        grid-template-columns: 1fr;
-                    }
-
-                    .gameChoices button {
-                        min-height: 112px;
-                    }
-
-                    .gameBoardFooter {
-                        align-items: stretch;
-                        flex-direction: column;
-                        gap: 1.25rem;
-                    }
-
-                    .gameBoardFooter button {
-                        width: 100%;
-                    }
-
-                    .capabilityGrid {
-                        grid-template-columns: 1fr;
-                    }
-
-                    .capability {
-                        min-height: 360px;
-                    }
-
-                    .processGrid {
-                        grid-template-columns: 1fr;
-                    }
-
-                    .processGrid li {
-                        gap: 1.5rem;
-                        grid-template-columns: 3.5rem 1fr;
-                        grid-template-rows: auto;
-                        min-height: 0;
-                        padding: 1.5rem;
-                    }
-
-                    .noteIndex article {
-                        align-items: start;
-                        grid-template-columns: 1fr auto;
-                    }
-
-                    .noteMeta {
-                        grid-column: 1 / -1;
-                    }
-
-                    .footer {
-                        grid-template-columns: 1fr;
-                        padding-left: 1.25rem;
-                        padding-right: 1.25rem;
-                    }
-
-                    .footer > p,
-                    .footerNote {
-                        grid-column: 1;
-                    }
-
-                    .footer > a {
-                        justify-content: space-between;
-                    }
                 }
 
                 @media (prefers-reduced-motion: reduce) {
                     html {
                         scroll-behavior: auto;
                     }
+                }
 
-                    *,
-                    *::before,
-                    *::after {
-                        animation-duration: 0.01ms !important;
-                        animation-iteration-count: 1 !important;
-                        scroll-behavior: auto !important;
-                        transition-duration: 0.01ms !important;
+                body {
+                    margin: 0;
+                    background: var(--night);
+                    color: #fff;
+                    font-family: var(--sans);
+                    font-size: 16px;
+                    line-height: 1.55;
+                    -webkit-font-smoothing: antialiased;
+                }
+
+                a {
+                    color: inherit;
+                }
+
+                :focus-visible {
+                    outline: 3px solid var(--coin);
+                    outline-offset: 3px;
+                }
+
+                .skipLink {
+                    position: absolute;
+                    left: 16px;
+                    top: -100px;
+                    z-index: 10;
+                    padding: 12px 14px;
+                    background: var(--coin);
+                    color: var(--ink);
+                    font-family: var(--pixel);
+                    font-size: 10px;
+                }
+
+                .skipLink:focus {
+                    top: 12px;
+                }
+
+                .siteHeader,
+                main,
+                .siteFooter {
+                    max-width: 960px;
+                    margin: 0 auto;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                }
+
+                .siteHeader {
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 12px 24px;
+                    padding-top: 20px;
+                    padding-bottom: 20px;
+                }
+
+                .wordmark {
+                    color: var(--coin);
+                    font-family: var(--pixel);
+                    font-size: 14px;
+                    text-decoration: none;
+                    text-shadow: 2px 2px 0 var(--brick);
+                }
+
+                .siteHeader nav {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 4px 18px;
+                }
+
+                .siteHeader nav a {
+                    padding: 8px 0;
+                    font-family: var(--pixel);
+                    font-size: 10px;
+                    text-decoration: none;
+                }
+
+                .siteHeader nav a:hover {
+                    color: var(--coin);
+                    text-decoration: underline;
+                    text-underline-offset: 4px;
+                }
+
+                main {
+                    padding-bottom: 64px;
+                }
+
+                .intro {
+                    padding: 24px 0 28px;
+                }
+
+                .intro h1 {
+                    margin: 0 0 16px;
+                    font-family: var(--pixel);
+                    font-size: clamp(22px, 5vw, 40px);
+                    font-weight: 400;
+                    line-height: 1.3;
+                    text-shadow: 4px 4px 0 var(--blue);
+                }
+
+                .intro p {
+                    max-width: 60ch;
+                    margin: 0;
+                    color: #d9d4ea;
+                    font-size: 18px;
+                }
+
+                .qMark {
+                    display: inline-grid;
+                    place-items: center;
+                    width: 1.4em;
+                    height: 1.4em;
+                    background: var(--question);
+                    color: var(--question-edge);
+                    box-shadow: inset 0 0 0 2px var(--question-edge);
+                    font-family: var(--pixel);
+                    font-size: 0.7em;
+                    vertical-align: 0.15em;
+                }
+
+                .game {
+                    outline: none;
+                    scroll-margin-top: 16px;
+                }
+
+                /* Keep screen + dialog inside one viewport on laptops. */
+                @media (min-width: 560px) {
+                    .game {
+                        max-width: max(560px, calc((100svh - 290px) * 16 / 9));
+                        margin: 0 auto;
                     }
+
+                    .dialog {
+                        height: 230px;
+                        overflow-y: auto;
+                    }
+                }
+
+                .game:focus-visible .screen {
+                    box-shadow:
+                        0 0 0 4px var(--coin),
+                        8px 8px 0 4px rgba(0, 0, 0, 0.6);
+                }
+
+                .screen {
+                    position: relative;
+                    border: 4px solid #000;
+                    background: var(--sky);
+                    box-shadow:
+                        0 0 0 4px #fff,
+                        8px 8px 0 4px rgba(0, 0, 0, 0.6);
+                    line-height: 0;
+                }
+
+                .canvas {
+                    display: block;
+                    width: 100%;
+                    height: auto;
+                    image-rendering: pixelated;
+                }
+
+                .hud {
+                    position: absolute;
+                    inset: 0 0 auto 0;
+                    display: flex;
+                    justify-content: space-between;
+                    gap: 8px;
+                    padding: 8px 12px;
+                    color: #fff;
+                    font-family: var(--pixel);
+                    font-size: clamp(7px, 1.3vw, 12px);
+                    line-height: 1.7;
+                    text-shadow: 2px 2px 0 #000;
+                    pointer-events: none;
+                }
+
+                .hud div {
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                .overlay {
+                    position: absolute;
+                    inset: 0;
+                    display: grid;
+                    place-content: center;
+                    justify-items: center;
+                    gap: 14px;
+                    padding: 16px;
+                    background: rgba(20, 16, 30, 0.55);
+                    line-height: 1.4;
+                    text-align: center;
+                }
+
+                .overlayTitle {
+                    margin: 0;
+                    color: var(--coin);
+                    font-family: var(--pixel);
+                    font-size: clamp(16px, 4vw, 32px);
+                    text-shadow: 3px 3px 0 #000;
+                }
+
+                .overlaySub {
+                    margin: 0;
+                    font-family: var(--pixel);
+                    font-size: clamp(8px, 1.6vw, 12px);
+                    text-shadow: 2px 2px 0 #000;
+                }
+
+                .startButton {
+                    min-height: 44px;
+                    padding: 14px 22px;
+                    border: 0;
+                    background: var(--brick);
+                    color: #fff;
+                    box-shadow:
+                        inset -4px -4px 0 rgba(0, 0, 0, 0.35),
+                        inset 4px 4px 0 rgba(255, 255, 255, 0.3),
+                        0 0 0 3px #000;
+                    font-family: var(--pixel);
+                    font-size: clamp(10px, 2vw, 14px);
+                    cursor: pointer;
+                }
+
+                .startButton:hover {
+                    background: #d8743f;
+                }
+
+                .startButton:active {
+                    transform: translate(2px, 2px);
+                }
+
+                .touchControls {
+                    display: none;
+                }
+
+                @media (hover: none) and (pointer: coarse) {
+                    .touchControls {
+                        position: absolute;
+                        inset: auto 8px 8px 8px;
+                        display: flex;
+                        justify-content: space-between;
+                        pointer-events: none;
+                    }
+
+                    .touchControls div {
+                        display: flex;
+                        gap: 10px;
+                    }
+
+                    .gameHelp {
+                        display: none;
+                    }
+                }
+
+                .touchButton {
+                    width: 56px;
+                    height: 56px;
+                    border: 3px solid rgba(0, 0, 0, 0.6);
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.4);
+                    color: #000;
+                    font-family: var(--pixel);
+                    font-size: 14px;
+                    pointer-events: auto;
+                    touch-action: none;
+                    user-select: none;
+                    -webkit-user-select: none;
+                    -webkit-touch-callout: none;
+                }
+
+                .touchButton:active {
+                    background: rgba(255, 255, 255, 0.7);
+                }
+
+                .dialog {
+                    min-height: 200px;
+                    margin-top: 24px;
+                    padding: 18px 20px;
+                    border: 4px solid #fff;
+                    background: #000;
+                    box-shadow: 0 0 0 4px #000;
+                }
+
+                .dialogMeta {
+                    margin: 0 0 10px;
+                    color: var(--coin);
+                    font-family: var(--pixel);
+                    font-size: 10px;
+                    line-height: 1.6;
+                    text-transform: uppercase;
+                }
+
+                .dialogTitle {
+                    margin: 0 0 8px;
+                    font-family: var(--pixel);
+                    font-size: clamp(12px, 2.2vw, 16px);
+                    font-weight: 400;
+                    line-height: 1.6;
+                }
+
+                .dialogOrg {
+                    margin: 0 0 10px;
+                    color: #cfc9e4;
+                }
+
+                .dialogList {
+                    margin: 0;
+                    padding-left: 20px;
+                }
+
+                .dialogList li::marker {
+                    color: var(--coin);
+                }
+
+                .dialogLinks {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 8px 20px;
+                    margin: 12px 0 0;
+                    padding: 0;
+                    list-style: none;
+                }
+
+                .dialogLinks a {
+                    color: var(--coin);
+                    text-underline-offset: 4px;
+                }
+
+                .gameHelp {
+                    margin: 14px 0 0;
+                    color: var(--soft);
+                    font-size: 14px;
+                    line-height: 2.2;
+                }
+
+                .gameHelp kbd {
+                    padding: 2px 6px;
+                    border: 2px solid #4a4266;
+                    border-bottom-width: 4px;
+                    background: var(--night-raised);
+                    color: #fff;
+                    font-family: var(--pixel);
+                    font-size: 9px;
+                }
+
+                .resume {
+                    margin-top: 80px;
+                    scroll-margin-top: 24px;
+                }
+
+                .resume > h2 {
+                    margin: 0 0 8px;
+                    color: var(--coin);
+                    font-family: var(--pixel);
+                    font-size: clamp(16px, 3vw, 22px);
+                    font-weight: 400;
+                }
+
+                .resumeLead {
+                    margin: 0 0 32px;
+                    color: var(--soft);
+                }
+
+                .resumeGrid,
+                .sideStack {
+                    display: grid;
+                    gap: 28px;
+                }
+
+                @media (min-width: 820px) {
+                    .resumeGrid {
+                        grid-template-columns: 1.4fr 1fr;
+                        align-items: start;
+                    }
+                }
+
+                .panel {
+                    padding: 24px;
+                    background: var(--paper);
+                    color: var(--ink);
+                    box-shadow:
+                        0 0 0 4px #000,
+                        8px 8px 0 4px rgba(0, 0, 0, 0.45);
+                }
+
+                .panel h3 {
+                    margin: 0 0 18px;
+                    color: var(--blue);
+                    font-family: var(--pixel);
+                    font-size: 12px;
+                    font-weight: 400;
+                    line-height: 1.6;
+                }
+
+                .timeline {
+                    display: grid;
+                    gap: 22px;
+                    margin: 0;
+                    padding: 0;
+                    list-style: none;
+                }
+
+                .timeline > li {
+                    position: relative;
+                    display: grid;
+                    gap: 2px;
+                    padding-left: 22px;
+                }
+
+                .timeline > li::before {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    top: 4px;
+                    width: 10px;
+                    height: 10px;
+                    background: var(--brick);
+                    box-shadow: 0 0 0 2px var(--ink);
+                }
+
+                .period {
+                    color: var(--muted);
+                    font-family: var(--pixel);
+                    font-size: 9px;
+                    line-height: 1.8;
+                }
+
+                .role {
+                    font-weight: 700;
+                }
+
+                .org {
+                    color: var(--muted);
+                }
+
+                .panel > .org {
+                    margin: -8px 0 12px;
+                }
+
+                .timeline ul,
+                .plainList {
+                    margin: 6px 0 0;
+                    padding-left: 18px;
+                    font-size: 15px;
+                }
+
+                .plainList li + li {
+                    margin-top: 4px;
+                }
+
+                .panel a {
+                    color: var(--blue);
+                    font-weight: 600;
+                    text-underline-offset: 3px;
+                }
+
+                .chips {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                    margin: 0;
+                    padding: 0;
+                    list-style: none;
+                }
+
+                .chips li {
+                    padding: 4px 10px;
+                    background: #fff;
+                    box-shadow: 0 0 0 2px var(--ink);
+                    font-size: 14px;
+                    font-weight: 600;
+                }
+
+                .siteFooter {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: space-between;
+                    gap: 8px 24px;
+                    padding-top: 24px;
+                    padding-bottom: 40px;
+                    border-top: 4px dashed var(--night-raised);
+                    color: var(--soft);
+                    font-size: 14px;
                 }
             `}</style>
         </>
     );
 }
-
-export default Home;
