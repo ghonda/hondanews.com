@@ -1,0 +1,7 @@
+Use case: ui-mockup
+Asset type: high-fidelity north-star comp for a desktop portfolio homepage, 3:2 landscape, showing the complete first viewport and the beginning of the second fold
+Primary request: Design a production-quality contemporary classic portfolio homepage for “Honda News”, the independent professional identity of a software developer named Honda; absolutely no relation to any automotive or motorcycle brand.
+Structure: narrow vertical navigation rail; asymmetric modular hero with typography on the left and cobalt system diagram on the right; three sharp practice panels; beginning of an editorial notes strip.
+Visual system: Vercel-level clarity, Linear-level interaction refinement, Framer-level editorial composition. Off-white, near-black, cobalt and cool gray. Swiss-inspired neo-grotesk sans, zero card rounding, hairline borders, strong modular proportions and subtle paper grain.
+Signature detail: one blue route exits the system diagram and crosses the panel boundaries to connect all three practice areas.
+Constraints: website surface, not a poster or dashboard; no photos, people, fake projects, customer brands, metrics, gradients, glass, 3D, automotive symbols, manufacturer identity, device mockup or watermark.
