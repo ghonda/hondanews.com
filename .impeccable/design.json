@@ -1,0 +1,205 @@
+{
+    "schemaVersion": 2,
+    "generatedAt": "2026-10-26T17:10:00.000Z",
+    "title": "Design System: Honda News",
+    "extensions": {
+        "colorMeta": {
+            "cobalt": {
+                "role": "primary",
+                "displayName": "Cobalto de ação",
+                "canonical": "#2f5bff",
+                "tonalRamp": [
+                    "#0b1a4a",
+                    "#10296f",
+                    "#173b9d",
+                    "#234bc9",
+                    "#2f5bff",
+                    "#6f8cff",
+                    "#b2c0ff",
+                    "#eef1ff"
+                ]
+            },
+            "paper": {
+                "role": "neutral",
+                "displayName": "Papel frio",
+                "canonical": "#f7f7f5",
+                "tonalRamp": [
+                    "#242423",
+                    "#3e3e3c",
+                    "#62625f",
+                    "#888884",
+                    "#adada8",
+                    "#d0d0cb",
+                    "#e8e8e4",
+                    "#f7f7f5"
+                ]
+            },
+            "ink": {
+                "role": "neutral",
+                "displayName": "Grafite integral",
+                "canonical": "#111111",
+                "tonalRamp": [
+                    "#111111",
+                    "#262626",
+                    "#444444",
+                    "#666666",
+                    "#898989",
+                    "#aeaeae",
+                    "#d4d4d4",
+                    "#f1f1f1"
+                ]
+            },
+            "rule": {
+                "role": "neutral",
+                "displayName": "Regra fria",
+                "canonical": "#d7d9de",
+                "tonalRamp": [
+                    "#202126",
+                    "#393b42",
+                    "#555861",
+                    "#747781",
+                    "#9699a2",
+                    "#b8bbc2",
+                    "#d7d9de",
+                    "#f1f2f4"
+                ]
+            }
+        },
+        "typographyMeta": {
+            "display": {
+                "displayName": "Display editorial",
+                "purpose": "Headline de capa e frases de máxima importância."
+            },
+            "headline": {
+                "displayName": "Headline de seção",
+                "purpose": "Abre os capítulos da página."
+            },
+            "title": {
+                "displayName": "Título modular",
+                "purpose": "Nomeia capacidades, etapas e temas."
+            },
+            "body": {
+                "displayName": "Corpo de leitura",
+                "purpose": "Explicações curtas com ritmo aberto."
+            },
+            "label": {
+                "displayName": "Label de ação",
+                "purpose": "Ações, metadados e numeração compacta."
+            }
+        },
+        "shadows": [],
+        "motion": [
+            {
+                "name": "title-reveal",
+                "value": "800ms cubic-bezier(0.16, 1, 0.3, 1)",
+                "purpose": "Revela somente o segundo verso do display quando movimento é permitido."
+            },
+            {
+                "name": "state-fast",
+                "value": "180ms ease",
+                "purpose": "Inversão de cor em ações."
+            },
+            {
+                "name": "arrow-response",
+                "value": "240ms cubic-bezier(0.16, 1, 0.3, 1)",
+                "purpose": "Avanço direcional das setas no hover."
+            }
+        ],
+        "breakpoints": [
+            { "name": "tablet", "value": "980px" },
+            { "name": "mobile", "value": "720px" }
+        ]
+    },
+    "components": [
+        {
+            "name": "Header Action",
+            "kind": "button",
+            "refersTo": "header-action",
+            "description": "Ação de contato nomeada, contornada e sempre visível.",
+            "html": "<a class=\"ds-header-action\" href=\"#contato\"><span>CONTATO</span><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M7 17 17 7M8 7h9v9\"/></svg></a>",
+            "css": ".ds-header-action { align-items:center; background:#f7f7f5; border:1px solid #111111; color:#111111; display:inline-flex; font:650 .72rem/1 Archivo, sans-serif; gap:.8rem; height:46px; justify-content:center; letter-spacing:.12em; padding:0 1rem; text-decoration:none; text-transform:uppercase; transition:background 180ms ease,color 180ms ease; } .ds-header-action svg { fill:none; height:20px; stroke:currentColor; stroke-linecap:square; stroke-linejoin:miter; stroke-width:1.5; width:20px; } .ds-header-action:hover { background:#111111; color:#ffffff; } .ds-header-action:focus-visible { outline:3px solid #2f5bff; outline-offset:5px; }"
+        },
+        {
+            "name": "Action Rail",
+            "kind": "custom",
+            "refersTo": "action-rail",
+            "description": "Faixa cobalto que une chamada e sequência de transformação.",
+            "html": "<a class=\"ds-action-rail\" href=\"#sobre\"><span>VER ABORDAGEM</span><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M5 12h14M14 7l5 5-5 5\"/></svg></a>",
+            "css": ".ds-action-rail { align-items:center; background:#2f5bff; color:#ffffff; display:flex; font:650 .78rem/1 Archivo, sans-serif; gap:1.2rem; justify-content:space-between; letter-spacing:.18em; min-height:92px; padding:0 5.25vw; text-decoration:none; text-transform:uppercase; } .ds-action-rail svg { fill:none; height:20px; stroke:currentColor; stroke-linecap:square; stroke-width:1.5; transition:transform 240ms cubic-bezier(.16,1,.3,1); width:20px; } .ds-action-rail:hover svg { transform:translateX(8px); } .ds-action-rail:focus-visible { outline:3px solid #ffffff; outline-offset:-6px; }"
+        },
+        {
+            "name": "Capability Panel",
+            "kind": "card",
+            "refersTo": "capability-panel",
+            "description": "Painel escuro de prática com título, explicação e geometria.",
+            "html": "<article class=\"ds-capability\"><h3>Arquitetura</h3><p>Organizo responsabilidades, integrações e decisões para reduzir complexidade.</p><span class=\"ds-diagram\" aria-hidden=\"true\"></span></article>",
+            "css": ".ds-capability { background:#111111; border:1px solid #4c4d52; border-radius:0; color:#ffffff; display:flex; flex-direction:column; justify-content:space-between; min-height:360px; padding:clamp(2rem,3.2vw,3.75rem); transition:background-color 220ms ease; } .ds-capability:hover { background:#181818; } .ds-capability h3 { font:520 clamp(1.55rem,2.3vw,2.3rem)/1.05 Archivo,sans-serif; letter-spacing:-.035em; margin:0; } .ds-capability p { color:#b5b7bd; line-height:1.55; max-width:29ch; } .ds-diagram { border:1px solid #dfe0e4; height:72px; margin:3rem auto 0; width:72px; }"
+        },
+        {
+            "name": "Process Step",
+            "kind": "custom",
+            "description": "Célula sequencial numerada para explicar o método.",
+            "html": "<article class=\"ds-process-step\"><span>01</span><div><h3>Ler o contexto</h3><p>Antes do código, entendo o problema, as pessoas e os limites do sistema.</p></div></article>",
+            "css": ".ds-process-step { background:#f7f7f5; border:1px solid #d7d9de; color:#111111; display:grid; gap:2.25rem; min-height:260px; padding:2rem; } .ds-process-step>span { color:#2f5bff; font:650 .82rem/1 Archivo,sans-serif; letter-spacing:.08em; } .ds-process-step h3 { font:520 1.6rem/1.05 Archivo,sans-serif; letter-spacing:-.035em; margin:0; } .ds-process-step p { color:#666a73; line-height:1.55; margin:1rem 0 0; }"
+        },
+        {
+            "name": "Editorial Note Row",
+            "kind": "custom",
+            "description": "Linha editorial de tema com metadado, título e ponto cobalto.",
+            "html": "<article class=\"ds-note-row\"><span>01 · ESTRUTURA</span><h3>Antes da solução, o mapa do problema.</h3><i aria-hidden=\"true\"></i></article>",
+            "css": ".ds-note-row { align-items:center; border-bottom:1px solid #d7d9de; color:#111111; display:grid; gap:1.5rem; grid-template-columns:8rem 1fr auto; min-height:145px; padding:1.5rem 0; } .ds-note-row>span { color:#666a73; font:650 .72rem/1 Archivo,sans-serif; letter-spacing:.12em; } .ds-note-row h3 { font:520 clamp(1.35rem,2vw,2rem)/1.05 Archivo,sans-serif; letter-spacing:-.035em; margin:0; } .ds-note-row i { background:#2f5bff; height:12px; width:12px; }"
+        }
+    ],
+    "narrative": {
+        "northStar": "Capa Editorial de Sistemas",
+        "overview": "Honda News combina a autoridade de uma capa editorial contemporânea com a precisão de um diagrama de software. O sistema é direto, técnico e humano: tipografia de grande escala comunica o assunto primeiro; campos inteiros de papel, grafite e cobalto organizam a narrativa sem depender de decoração ou promessas vazias. O ritmo alterna impacto e explicação. Áreas densas usam geometria contável, regras finas e módulos alinhados; áreas de leitura recebem espaço generoso. A identidade deve parecer autoral e profissional, nunca automotiva, nostálgica ou semelhante a um terminal genérico.",
+        "keyCharacteristics": [
+            "Tipografia Archivo ampla, pesada e altamente hierárquica.",
+            "Cobalto reservado para ação, progressão e pequenos pontos de sinal.",
+            "Campos de cor em largura total, separados por regras de um pixel.",
+            "Diagramas SVG exatos no lugar de ilustrações decorativas.",
+            "Cantos rigorosamente quadrados e profundidade sem sombras."
+        ],
+        "rules": [
+            {
+                "name": "The Field Color Rule",
+                "body": "Cor entra como campo que organiza uma região inteira ou como sinal geométrico preciso; não deve ser espalhada em pequenos enfeites.",
+                "section": "colors"
+            },
+            {
+                "name": "The One Accent Rule",
+                "body": "Cobalto é o único acento cromático. Novas cores só entram quando uma necessidade semântica real exigir outro papel.",
+                "section": "colors"
+            },
+            {
+                "name": "The Headline Carries the Page Rule",
+                "body": "Não adicionar eyebrow sobre títulos; a escala, o peso e a posição do próprio título definem sua importância.",
+                "section": "typography"
+            },
+            {
+                "name": "The First Fold Rule",
+                "body": "Em qualquer largura, headline, apoio, faixa cobalto e o começo do campo grafite precisam aparecer como uma única sequência contínua.",
+                "section": "layout"
+            },
+            {
+                "name": "The Flat Structure Rule",
+                "body": "Superfícies não flutuam; hierarquia espacial deve ser construída com cor, escala, borda e posição.",
+                "section": "elevation"
+            }
+        ],
+        "dos": [
+            "Do usar campos inteiros de papel, grafite e cobalto para controlar o ritmo da página.",
+            "Do manter tracking de display em -0.04em ou mais aberto.",
+            "Do criar diagramas com SVG geométrico, stroke fino e um único ponto cobalto.",
+            "Do preservar foco visível, alvos de pelo menos 44px e fallback para movimento reduzido.",
+            "Do fazer títulos carregarem a hierarquia sem depender de labels introdutórios."
+        ],
+        "donts": [
+            "Don't usar logotipos, cores, símbolos ou linguagem ligados à fabricante de veículos Honda.",
+            "Don't transformar a interface em uma coleção de cartões arredondados, vidro, gradientes ou sombras difusas.",
+            "Don't usar monospace, terminal, snippets de código ou brilho neon como atalho para parecer técnico.",
+            "Don't inventar clientes, métricas, projetos, depoimentos ou canais de contato.",
+            "Don't adicionar cor fora de um papel semântico claro; o cobalto deve continuar sendo a única voz de acento."
+        ]
+    }
+}

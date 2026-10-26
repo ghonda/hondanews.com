@@ -1,0 +1,76 @@
+{
+  "title": "Escolha o mundo visual da Honda News",
+  "question": "A proposta principal transforma o portfólio em um atlas vivo de sistemas. Você pode mantê-la, escolher uma alternativa ou pedir um novo sorteio.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "Atlas de Sistemas",
+      "kicker": "PROPOSTA PRINCIPAL",
+      "lineage": "registros de coleção, transparências técnicas e etiquetas de arquivo",
+      "thesis": "Cada projeto é uma peça catalogada; cada decisão de engenharia ganha uma camada visível.",
+      "palette": ["#1545D8", "#F3F1E8", "#D7FF3F", "#171714", "#FF5C35"],
+      "materials": ["filme translúcido", "etiquetas numeradas", "carimbos de edição"],
+      "viewport": "Um grande diagrama de sistema ocupa a tela, cercado por notas de campo, índice editorial e uma chamada para explorar o trabalho.",
+      "risk": "Pode parecer institucional se as camadas e a voz autoral não tiverem movimento e personalidade.",
+      "sketch": ".impeccable/sketches/assigned.png"
+    },
+    {
+      "id": "challenger-brick",
+      "label": "Manual de Montagem",
+      "kicker": "ALTERNATIVA",
+      "lineage": "livretos de construção por etapas e diagramas explodidos",
+      "thesis": "Software aparece como algo construído passo a passo, com peças, encaixes e decisões legíveis.",
+      "case": "Clareza excelente para explicar processos; perde um pouco de sobriedade profissional se o caráter lúdico dominar.",
+      "palette": ["#61B8EE", "#F7F4E8", "#E6372E", "#F1C40F", "#111111"],
+      "materials": ["papel azul de instrução", "peças vetoriais", "setas de encaixe"],
+      "viewport": "O projeto em destaque surge em peças separadas que descem e se encaixam enquanto a narrativa avança.",
+      "risk": "A associação com brinquedos pode reduzir a percepção de senioridade.",
+      "sketch": ".impeccable/sketches/challenger-brick.png",
+      "hero": "https://impeccable.style/worlds/cards/games-toys-physics-play-brick-build-instructions-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/games-toys-physics-play-brick-build-instructions.webp"
+    },
+    {
+      "id": "challenger-bbs",
+      "label": "Nightboard 80×25",
+      "kicker": "ALTERNATIVA",
+      "lineage": "bulletin boards ANSI acessados de madrugada",
+      "thesis": "Honda News vira uma comunidade textual particular, transmitida linha por linha em uma grade de caracteres.",
+      "case": "Identificação imediata com desenvolvedores; perde diferenciação por se aproximar do clichê do portfólio-terminal.",
+      "palette": ["#050505", "#24E5DA", "#EA3FE2", "#FFF45C", "#E9EDF0"],
+      "materials": ["glifos CP437", "caixas de caracteres", "presença em tempo real"],
+      "viewport": "Um título ANSI grande chega linha por linha, seguido por um menu numerado de projetos, notas e contato.",
+      "risk": "Pode cansar na leitura longa e depender demais de nostalgia técnica.",
+      "sketch": ".impeccable/sketches/challenger-bbs.png",
+      "hero": "https://impeccable.style/worlds/cards/medium-native-ansi-bbs-nightboard-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/medium-native-ansi-bbs-nightboard.webp"
+    },
+    {
+      "id": "challenger-toyism",
+      "label": "Símbolos em Movimento",
+      "kicker": "ALTERNATIVA",
+      "lineage": "placas pintadas de coletivos com vocabulário gráfico compartilhado",
+      "thesis": "Cada habilidade recebe um símbolo próprio; os mesmos elementos se recombinam em projetos diferentes.",
+      "case": "Originalidade visual muito alta; exige mais explicação para comunicar desenvolvimento de software no primeiro olhar.",
+      "palette": ["#2450D5", "#E83F9B", "#FFE229", "#F4F0E7", "#161616"],
+      "materials": ["formas pintadas sem degradê", "marcas autorais", "objetos suspensos"],
+      "viewport": "Uma composição de símbolos coloridos flutua ao redor do nome e se reorganiza para revelar cada frente de trabalho.",
+      "risk": "Pode parecer um portfólio de ilustração antes de parecer engenharia de software.",
+      "sketch": ".impeccable/sketches/challenger-toyism.png",
+      "hero": "https://impeccable.style/worlds/cards/design-canon-toyism-signed-collective-plate-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/design-canon-toyism-signed-collective-plate.webp"
+    }
+  ],
+  "reroll": true,
+  "canon": true,
+  "canonCard": {
+    "label": "Portfólio contemporâneo clássico",
+    "lineage": "hero tipográfico, projetos em cartões e chamada de contato",
+    "thesis": "A estrutura familiar de um portfólio de desenvolvedor, executada com muito cuidado.",
+    "palette": ["#F7F7F5", "#111111", "#2F5BFF", "#DADCE0"],
+    "materials": ["tipografia limpa", "grade modular", "capturas de projeto"],
+    "viewport": "Nome, especialidade e chamada de contato à esquerda; seleção de projetos à direita.",
+    "risk": "É claro e confiável, mas menos memorável e menos próprio da ideia Honda News.",
+    "sketch": ".impeccable/sketches/canon.png"
+  },
+  "steer": true
+}
