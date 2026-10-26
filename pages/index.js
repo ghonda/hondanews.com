@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { useEffect, useRef, useState } from "react";
 
 const capabilities = [
     {
@@ -59,6 +60,35 @@ const focusNotes = [
     },
 ];
 
+const flowSteps = [
+    {
+        id: "code",
+        label: "Código",
+        description: "A ideia ganha uma primeira forma executável.",
+    },
+    {
+        id: "structure",
+        label: "Estrutura",
+        description: "Responsabilidades e relações organizam o sistema.",
+    },
+    {
+        id: "interface",
+        label: "Interface",
+        description: "A lógica se torna clara para quem usa.",
+    },
+    {
+        id: "product",
+        label: "Produto",
+        description: "O conjunto resolve um problema no mundo real.",
+    },
+];
+
+const flowPermutations = [
+    ["interface", "code", "product", "structure"],
+    ["product", "structure", "code", "interface"],
+    ["structure", "interface", "product", "code"],
+];
+
 function ArrowIcon({ diagonal = false }) {
     return (
         <svg
@@ -115,6 +145,177 @@ function CapabilityDiagram({ type }) {
                 height="10"
             />
         </svg>
+    );
+}
+
+function FlowGame() {
+    const [round, setRound] = useState(0);
+    const [selected, setSelected] = useState([]);
+    const [status, setStatus] = useState("idle");
+    const [mistakes, setMistakes] = useState(0);
+    const [elapsedTenths, setElapsedTenths] = useState(0);
+    const [message, setMessage] = useState(
+        "O cronômetro começa na primeira escolha.",
+    );
+    const startedAt = useRef(0);
+
+    useEffect(() => {
+        if (status !== "playing") {
+            return undefined;
+        }
+
+        const timer = window.setInterval(() => {
+            setElapsedTenths(
+                Math.max(
+                    1,
+                    Math.round((performance.now() - startedAt.current) / 100),
+                ),
+            );
+        }, 100);
+
+        return () => window.clearInterval(timer);
+    }, [status]);
+
+    const orderedChoices = flowPermutations[round].map((id) =>
+        flowSteps.find((step) => step.id === id),
+    );
+    const score = Math.max(100, 1000 - mistakes * 100 - elapsedTenths * 2);
+
+    function chooseStep(step) {
+        if (status === "complete" || selected.includes(step.id)) {
+            return;
+        }
+
+        const now = performance.now();
+
+        if (status === "idle") {
+            startedAt.current = now;
+            setStatus("playing");
+        }
+
+        const expectedStep = flowSteps[selected.length];
+
+        if (step.id !== expectedStep.id) {
+            setMistakes((current) => current + 1);
+            setMessage(
+                `${step.label} entra depois. Procure a etapa ${String(selected.length + 1).padStart(2, "0")}.`,
+            );
+            return;
+        }
+
+        const nextSelected = [...selected, step.id];
+        setSelected(nextSelected);
+
+        if (nextSelected.length === flowSteps.length) {
+            const finalTime = Math.max(
+                1,
+                Math.round((now - startedAt.current) / 100),
+            );
+            setElapsedTenths(finalTime);
+            setStatus("complete");
+            setMessage("Fluxo resolvido. Cada etapa preparou a próxima.");
+            return;
+        }
+
+        setMessage(
+            `Etapa ${String(nextSelected.length).padStart(2, "0")} certa. Continue o fluxo.`,
+        );
+    }
+
+    function restartGame() {
+        setRound((current) => (current + 1) % flowPermutations.length);
+        setSelected([]);
+        setStatus("idle");
+        setMistakes(0);
+        setElapsedTenths(0);
+        setMessage("O cronômetro começa na primeira escolha.");
+        startedAt.current = 0;
+    }
+
+    return (
+        <section className="flowGame" aria-labelledby="flow-game-title">
+            <div className="gameIntro">
+                <h2 id="flow-game-title">Monte o fluxo.</h2>
+                <p>
+                    Selecione os quatro blocos na ordem em que uma ideia se
+                    transforma em uma experiência útil.
+                </p>
+
+                <dl className="gameStats" aria-label="Placar da rodada">
+                    <div>
+                        <dt>Tempo</dt>
+                        <dd>{(elapsedTenths / 10).toFixed(1)}s</dd>
+                    </div>
+                    <div>
+                        <dt>Erros</dt>
+                        <dd>{String(mistakes).padStart(2, "0")}</dd>
+                    </div>
+                    <div>
+                        <dt>Pontos</dt>
+                        <dd>{status === "complete" ? score : "—"}</dd>
+                    </div>
+                </dl>
+            </div>
+
+            <div
+                className={`gameBoard ${status === "complete" ? "isComplete" : ""}`}
+            >
+                <div className="gameBoardHeader">
+                    <p>Escolha a próxima etapa</p>
+                    <span aria-live="polite">{message}</span>
+                </div>
+
+                <ol className="flowSlots" aria-label="Fluxo montado">
+                    {flowSteps.map((step, index) => {
+                        const isFilled = selected[index] === step.id;
+
+                        return (
+                            <li
+                                className={isFilled ? "isFilled" : ""}
+                                key={step.id}
+                            >
+                                <span>
+                                    {String(index + 1).padStart(2, "0")}
+                                </span>
+                                <strong>
+                                    {isFilled ? step.label : "Aguardando"}
+                                </strong>
+                            </li>
+                        );
+                    })}
+                </ol>
+
+                <div className="gameChoices" aria-label="Etapas disponíveis">
+                    {orderedChoices.map((step) => {
+                        const isSelected = selected.includes(step.id);
+
+                        return (
+                            <button
+                                type="button"
+                                disabled={isSelected || status === "complete"}
+                                onClick={() => chooseStep(step)}
+                                key={step.id}
+                            >
+                                <span>{step.label}</span>
+                                <small>{step.description}</small>
+                            </button>
+                        );
+                    })}
+                </div>
+
+                <div className="gameBoardFooter">
+                    <span>
+                        {selected.length} de {flowSteps.length} etapas
+                    </span>
+                    <button type="button" onClick={restartGame}>
+                        {status === "complete"
+                            ? "Jogar novamente"
+                            : "Reiniciar"}
+                        <ArrowIcon />
+                    </button>
+                </div>
+            </div>
+        </section>
     );
 }
 
@@ -260,6 +461,8 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
                         ))}
                     </ol>
                 </section>
+
+                <FlowGame />
 
                 <section
                     id="notas"
@@ -705,6 +908,266 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
                     margin: 1rem 0 0;
                 }
 
+                .flowGame {
+                    border-top: 1px solid var(--line);
+                    display: grid;
+                    gap: clamp(3rem, 6vw, 7rem);
+                    grid-template-columns: 0.82fr 1.68fr;
+                    padding: clamp(6rem, 10vw, 10rem) 5.25vw;
+                }
+
+                .gameIntro h2 {
+                    font-size: clamp(2.9rem, 5vw, 5.4rem);
+                    font-stretch: 105%;
+                    font-weight: 720;
+                    letter-spacing: -0.04em;
+                    line-height: 0.98;
+                    margin: 0;
+                    max-width: 8ch;
+                    text-wrap: balance;
+                }
+
+                .gameIntro > p {
+                    color: var(--muted);
+                    line-height: 1.55;
+                    margin: 2rem 0 0;
+                    max-width: 35ch;
+                }
+
+                .gameStats {
+                    border-top: 1px solid var(--ink);
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    margin: clamp(3rem, 5vw, 5rem) 0 0;
+                }
+
+                .gameStats div {
+                    border-bottom: 1px solid var(--line);
+                    min-width: 0;
+                    padding: 1.1rem 0;
+                }
+
+                .gameStats dt {
+                    color: var(--muted);
+                    font-size: 0.68rem;
+                    font-weight: 650;
+                    letter-spacing: 0.12em;
+                    margin-bottom: 0.55rem;
+                    text-transform: uppercase;
+                }
+
+                .gameStats dd {
+                    font-size: clamp(1.15rem, 1.8vw, 1.6rem);
+                    font-weight: 520;
+                    letter-spacing: -0.03em;
+                    margin: 0;
+                }
+
+                .gameBoard {
+                    background: var(--ink);
+                    color: white;
+                    min-width: 0;
+                    padding: clamp(1.5rem, 3vw, 3rem);
+                    position: relative;
+                }
+
+                .gameBoard::after {
+                    background: var(--blue);
+                    content: "";
+                    height: 8px;
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    transition: width 500ms cubic-bezier(0.16, 1, 0.3, 1);
+                    width: 0;
+                }
+
+                .gameBoard.isComplete::after {
+                    width: 100%;
+                }
+
+                .gameBoardHeader {
+                    align-items: start;
+                    display: grid;
+                    gap: 1.5rem;
+                    grid-template-columns: 0.8fr 1.2fr;
+                    margin-bottom: clamp(2rem, 4vw, 4rem);
+                }
+
+                .gameBoardHeader p {
+                    font-size: 0.72rem;
+                    font-weight: 650;
+                    letter-spacing: 0.12em;
+                    margin: 0;
+                    text-transform: uppercase;
+                }
+
+                .gameBoardHeader span {
+                    color: var(--dark-muted);
+                    line-height: 1.45;
+                    min-height: 2.9em;
+                }
+
+                .flowSlots {
+                    display: grid;
+                    grid-template-columns: repeat(4, 1fr);
+                    list-style: none;
+                    margin: 0 0 clamp(2rem, 4vw, 4rem);
+                    padding: 0;
+                }
+
+                .flowSlots li {
+                    border-bottom: 1px solid #4c4d52;
+                    color: #777980;
+                    display: grid;
+                    gap: 0.65rem;
+                    min-width: 0;
+                    padding: 0 0.8rem 1rem 0;
+                    position: relative;
+                    transition:
+                        border-color 220ms ease,
+                        color 220ms ease;
+                }
+
+                .flowSlots li::after {
+                    background: #4c4d52;
+                    bottom: -4px;
+                    content: "";
+                    height: 7px;
+                    position: absolute;
+                    right: 0;
+                    width: 7px;
+                }
+
+                .flowSlots li.isFilled {
+                    border-color: var(--blue);
+                    color: white;
+                }
+
+                .flowSlots li.isFilled::after {
+                    background: var(--blue);
+                }
+
+                .flowSlots li > span {
+                    font-size: 0.68rem;
+                    letter-spacing: 0.08em;
+                }
+
+                .flowSlots strong {
+                    font-size: clamp(0.8rem, 1.2vw, 1rem);
+                    font-weight: 520;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                .gameChoices {
+                    border-left: 1px solid #4c4d52;
+                    border-top: 1px solid #4c4d52;
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                }
+
+                .gameChoices button {
+                    align-items: start;
+                    appearance: none;
+                    background: transparent;
+                    border: 0;
+                    border-bottom: 1px solid #4c4d52;
+                    border-radius: 0;
+                    border-right: 1px solid #4c4d52;
+                    color: white;
+                    cursor: pointer;
+                    display: flex;
+                    flex-direction: column;
+                    font: inherit;
+                    gap: 0.7rem;
+                    min-height: 132px;
+                    padding: 1.4rem;
+                    text-align: left;
+                    transition:
+                        background-color 180ms ease,
+                        color 180ms ease;
+                }
+
+                .gameChoices button:hover:not(:disabled) {
+                    background: var(--blue);
+                }
+
+                .gameChoices button:focus-visible,
+                .gameBoardFooter button:focus-visible {
+                    outline: 3px solid white;
+                    outline-offset: -6px;
+                }
+
+                .gameChoices button:disabled {
+                    color: #777980;
+                    cursor: default;
+                }
+
+                .gameChoices button:disabled small {
+                    color: #66686e;
+                }
+
+                .gameChoices button > span {
+                    font-size: clamp(1.2rem, 1.8vw, 1.65rem);
+                    font-weight: 520;
+                    letter-spacing: -0.03em;
+                }
+
+                .gameChoices small {
+                    color: var(--dark-muted);
+                    font-size: 0.88rem;
+                    line-height: 1.4;
+                    max-width: 30ch;
+                    transition: color 180ms ease;
+                }
+
+                .gameChoices button:hover:not(:disabled) small {
+                    color: white;
+                }
+
+                .gameBoardFooter {
+                    align-items: center;
+                    display: flex;
+                    justify-content: space-between;
+                    margin-top: 1.5rem;
+                }
+
+                .gameBoardFooter > span {
+                    color: var(--dark-muted);
+                    font-size: 0.75rem;
+                    letter-spacing: 0.08em;
+                    text-transform: uppercase;
+                }
+
+                .gameBoardFooter button {
+                    align-items: center;
+                    appearance: none;
+                    background: transparent;
+                    border: 1px solid #6a6c72;
+                    border-radius: 0;
+                    color: white;
+                    cursor: pointer;
+                    display: flex;
+                    font: inherit;
+                    font-size: 0.72rem;
+                    font-weight: 650;
+                    gap: 1.25rem;
+                    justify-content: space-between;
+                    letter-spacing: 0.12em;
+                    min-height: 48px;
+                    padding: 0 1rem;
+                    text-transform: uppercase;
+                    transition:
+                        background-color 180ms ease,
+                        color 180ms ease;
+                }
+
+                .gameBoardFooter button:hover {
+                    background: white;
+                    color: var(--ink);
+                }
+
                 .notes {
                     border-top: 1px solid var(--line);
                     display: grid;
@@ -849,6 +1312,25 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
                     .notes {
                         grid-template-columns: 1fr;
                     }
+
+                    .flowGame {
+                        grid-template-columns: 1fr;
+                    }
+
+                    .gameIntro {
+                        display: grid;
+                        gap: 2rem;
+                        grid-template-columns: 1fr 1fr;
+                    }
+
+                    .gameIntro > p,
+                    .gameStats {
+                        margin-top: 0;
+                    }
+
+                    .gameStats {
+                        grid-column: 1 / -1;
+                    }
                 }
 
                 @media (max-width: 720px) {
@@ -916,6 +1398,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
                     .capabilities,
                     .process,
+                    .flowGame,
                     .notes {
                         padding-left: 1.25rem;
                         padding-right: 1.25rem;
@@ -927,9 +1410,55 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
                     }
 
                     .sectionIntro h2,
+                    .gameIntro h2,
                     .notes h2,
                     .footer h2 {
                         font-size: clamp(2.8rem, 13vw, 4.5rem);
+                    }
+
+                    .gameIntro {
+                        display: block;
+                    }
+
+                    .gameIntro > p {
+                        margin-top: 1.5rem;
+                    }
+
+                    .gameStats {
+                        margin-top: 2.5rem;
+                    }
+
+                    .gameBoard {
+                        margin-left: -1.25rem;
+                        margin-right: -1.25rem;
+                        padding: 2rem 1.25rem;
+                    }
+
+                    .gameBoardHeader {
+                        grid-template-columns: 1fr;
+                    }
+
+                    .flowSlots {
+                        grid-template-columns: repeat(2, 1fr);
+                        row-gap: 1.5rem;
+                    }
+
+                    .gameChoices {
+                        grid-template-columns: 1fr;
+                    }
+
+                    .gameChoices button {
+                        min-height: 112px;
+                    }
+
+                    .gameBoardFooter {
+                        align-items: stretch;
+                        flex-direction: column;
+                        gap: 1.25rem;
+                    }
+
+                    .gameBoardFooter button {
+                        width: 100%;
                     }
 
                     .capabilityGrid {
